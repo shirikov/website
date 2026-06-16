@@ -1,483 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research - Anton Shirikov</title>
-    <meta name="description" content="Anton Shirikov, Political Scientist" />
-    <meta name="author" content="Anton Shirikov" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research — Anton Shirikov</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .book{border-top:2px solid var(--rule);padding:clamp(40px,5vw,60px) 0 clamp(40px,5vw,56px);margin-top:8px}
+  .book .label{color:var(--accent);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .book h2{font-weight:800;font-size:clamp(40px,6.4vw,68px);line-height:.94;letter-spacing:-.03em;margin:16px 0 12px;color:var(--ink)}
+  .book .sub{font-size:clamp(19px,2.6vw,23px);font-weight:500;color:var(--ink-2)}
+  .book p{color:var(--muted);font-size:17px;line-height:1.64;margin:24px 0 0;max-width:70ch}
+  .book p + p{margin-top:16px}
 
-    <link rel="icon" type="image/png" href="favicon.ico">
-    <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon.png">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #8b3a3a;
-            --accent-color: #b94a48;
-            --text-color: #2d2d2d;
-            --text-light: #64748b;
-            --border-color: #cbd5e1;
-            --bg-subtle: #f8fafc;
-            --link-color: #b94a48;
-            --link-hover: #8b3a3a;
-            --highlight-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            --footer-bg: #334155;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            color: var(--text-color);
-            line-height: 1.7;
-            font-size: 17px;
-            background: #ffffff;
-        }
-
-        h1,
-        h2,
-        h3 {
-            font-family: 'Lora', Georgia, serif;
-            font-weight: 600;
-            color: var(--primary-color);
-            line-height: 1.3;
-        }
-
-        h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        h3 {
-            font-size: 1.3rem;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        a {
-            color: var(--link-color);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        a:hover {
-            color: var(--link-hover);
-        }
-
-        /* Header & Navigation */
-        header {
-            background: var(--bg-subtle);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            background: rgba(247, 250, 252, 0.95);
-        }
-
-        nav {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .site-title {
-            font-family: 'Lora', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            font-weight: 400;
-            color: var(--text-color);
-            padding: 0.5rem 0;
-            position: relative;
-        }
-
-        .nav-links a.active {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
-            width: 100%;
-        }
-
-        /* Main Content */
-        main {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        /* Book Section */
-        .book-section {
-            background: var(--highlight-bg);
-            border-left: 4px solid var(--accent-color);
-            padding: 2rem;
-            margin-bottom: 3rem;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .book-section h3 {
-            margin-top: 0;
-            margin-bottom: 1rem;
-        }
-
-        .book-section p {
-            margin-bottom: 1rem;
-        }
-
-        /* Working Papers */
-        .paper-list {
-            list-style: none;
-        }
-
-        .paper-list li {
-            margin-bottom: 2.5rem;
-            padding-bottom: 2.5rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .paper-list li:last-child {
-            border-bottom: none;
-        }
-
-        .paper-title {
-            font-weight: 600;
-            font-size: 1.05rem;
-            margin-bottom: 0.5rem;
-            line-height: 1.5;
-        }
-
-        .paper-authors {
-            font-style: italic;
-            color: var(--text-light);
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .paper-link {
-            display: inline-block;
-            margin-bottom: 0.75rem;
-            font-size: 0.95rem;
-        }
-
-        .paper-abstract {
-            color: var(--text-color);
-            line-height: 1.7;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--footer-bg);
-            color: #e2e8f0;
-            padding: 2rem;
-            margin-top: 3rem;
-        }
-
-        .footer-content {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.95rem;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .footer-links a {
-            color: #e2e8f0;
-            opacity: 0.9;
-            transition: opacity 0.2s ease;
-        }
-
-        .footer-links a:hover {
-            opacity: 1;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            nav {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1rem;
-            }
-
-            .nav-links {
-                gap: 1rem;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            h3 {
-                font-size: 1.2rem;
-            }
-
-            main {
-                padding: 2rem 1.5rem;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-    </style>
+  .wp{padding:36px 0;border-top:1px solid var(--hair)}
+  .wp:last-child{border-bottom:1px solid var(--hair)}
+  .wp h3{font-size:clamp(21px,2.8vw,25px);font-weight:600;letter-spacing:-.015em;line-height:1.28;max-width:46ch}
+  .wp .auth{margin-top:10px;font-family:var(--mono);font-size:12px;letter-spacing:.03em;color:var(--ink-2);text-transform:uppercase}
+  .wp .abs{margin-top:14px;color:var(--muted);font-size:16.5px;line-height:1.62;max-width:74ch}
+  .wp .plinks{margin-top:14px}
+</style>
 </head>
-
 <body>
-    <header>
-        <nav>
-            <a href="index.html" class="site-title">Anton Shirikov</a>
-            <ul class="nav-links">
-                <li><a href="index.html">About</a></li>
-                <li><a href="files/AntonShirikovCV.pdf" rel="noreferrer" target="_blank">CV</a></li>
-                <li><a href="research.html" class="active">Research</a></li>
-                <li><a href="publications.html">Publications</a></li>
-                <li><a href="data.html">Data Sets</a></li>
-                <li><a href="teaching.html">Teaching</a></li>
-            </ul>
-        </nav>
-    </header>
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="index.html">Anton Shirikov</a>
+      <button class="navtoggle" aria-label="Menu" aria-expanded="false"><span></span></button>
+      <div class="navlinks">
+        <a href="index.html">About</a>
+        <a class="active" href="research.html">Research</a>
+        <a href="publications.html">Publications</a>
+        <a href="data.html">Data Sets</a>
+        <a href="teaching.html">Teaching</a>
+        <a href="media.html">Media</a>
+        <a class="cv" href="files/AntonShirikovCV.pdf" target="_blank">CV</a>
+      </div>
+    </nav>
+  </div>
+</header>
 
-    <main>
-        <h2>Current Research</h2>
+<main>
+  <div class="wrap">
+    <section class="pagehead">
+      <h1>Current research</h1>
+    </section>
+  </div>
 
-        <div class="book-section">
-            <h3><i>How Propaganda Wins: The Making of Loyal Audiences in Autocracies</i></h3>
-            <p><strong>Forthcoming at Cambridge University Press</strong></p>
+  <div class="wrap">
+    <section class="book">
+      <div class="label">Forthcoming Book</div>
+      <h2>How Propaganda Wins</h2>
+      <div class="sub">The Making of Loyal Audiences in Autocracies</div>
+      <p>My book sheds light on a new model of state media in consolidated autocracies such as Russia. While conventional theories view propaganda as top-down messaging used to persuade, intimidate, or confuse citizens, I argue that propaganda can be a tool of regime maintenance that reinforces the relationship between the autocrat and supporters. This model, which I call <em>service propaganda</em>, borrows tactics from partisan media outlets, combining attractive political narratives that reaffirm pro-regime identities with tailored, engaging news reporting.</p>
+      <p>In the book, I explain and document the tactics of service propaganda using a corpus of over 100,000 Russian state media stories and an advanced machine learning classifier. I then demonstrate through a series of surveys and experiments that pro-Putin Russians genuinely value state media reporting for its political aspects and the information it offers, while viewing independent media as biased and unreliable. These analyses draw on my recent articles in the Journal of Politics and Political Communication. Further, I show that the Kremlin's echo chamber remained attractive to Russians during a major political shock, Russia's 2022 full-scale invasion of Ukraine. State-run outlets sustained and adjusted their service propaganda model in daily reporting throughout the invasion, helping the Kremlin ensure public support for the war and acquiescence to it. More generally, my theory of propaganda as a maintenance tool helps explain the longevity and mass legitimacy of autocrats such as Vladimir Putin. The book's research has been featured in prominent media outlets, including the Washington Post, PBS NewsHour, and the Financial Times.</p>
+    </section>
+  </div>
 
-            <p>My book sheds light on a new model of state media in consolidated autocracies such as Russia. While
-                conventional theories view propaganda as top-down messaging used to persuade, intimidate, or confuse
-                citizens, I argue that propaganda can be a tool of regime maintenance that reinforces the relationship
-                between the autocrat and supporters. This model, which I call service propaganda, borrows tactics from
-                partisan media outlets, combining attractive political narratives that reaffirm pro-regime identities
-                with tailored, engaging news reporting.</p>
+  <div class="wrap">
+    <section class="block">
+      <div class="sec-head"><h2>Working Papers</h2></div>
 
-            <p>In the book, I explain and document the tactics of service propaganda using a corpus of over 100,000
-                Russian state media stories and an advanced machine learning classifier. I then demonstrate through a
-                series of surveys and experiments that pro-Putin Russians genuinely value state media reporting for its
-                political aspects and the information it offers, while viewing independent media as biased and
-                unreliable. These analyses draw on my recent articles in the Journal of Politics and Political
-                Communication. Further, I show that the Kremlin's echo chamber remained attractive to Russians during a
-                major political shock—Russia's 2022 full-scale invasion of Ukraine. State-run outlets sustained and
-                adjusted their service propaganda model in daily reporting throughout the invasion, helping the Kremlin
-                to ensure public support for the war and acquiescence to it. More generally, my theory of propaganda as
-                a maintenance tool helps explain the longevity and mass legitimacy of autocrats such as Vladimir Putin.
-                The book's research has been featured in prominent media outlets, including the Washington Post,
-                PBS NewsHour, and the Financial Times.</p>
-        </div>
+      <div class="wp">
+        <h3>Still Watching, Less Persuaded: Attention to News Reduces Authoritarian Propaganda Effectiveness</h3>
+        <div class="auth">with Georgiy Syunyaev</div>
+        <div class="abs">State propaganda in autocracies often creates information bubbles, leaving citizens unwilling or unable to switch to alternative sources. This study shows that propaganda's sway can be decreased even without escaping such bubbles. In a panel experiment with 1,176 Russian citizens, we randomly assigned participants to analyze the reporting patterns of (i) propagandistic state-owned TV content only or (ii) both state-owned and balanced non-governmental TV content over four weeks. Two weeks after the intervention, both treatments reduced support for the authoritarian regime but did not undermine trust in or exposure to state media. Exploiting the differences in news channel composition across treatments, we find support for two mechanisms explaining these effects: increased attention to familiar media content and increased consumption of news from non-government sources. Subgroup analyses show that these mechanisms operate primarily among citizens who already exhibit skepticism toward the regime and propaganda.</div>
+        <div class="plinks"><a href="https://osf.io/preprints/osf/9rf6p_v3">Current version</a></div>
+      </div>
 
-        <h3>Working Papers</h3>
+      <div class="wp">
+        <h3>Borrowed Authority: Expert Messengers and the Credibility of Foreign Propaganda Narratives</h3>
+        <div class="abs">Foreign propaganda increasingly penetrates democratic discourse through domestic intermediaries. This study examines whether expert attribution enhances the credibility of authoritarian messaging and whether fact-based corrections can offset such credibility gains. In a survey experiment with 1,267 U.S. residents, I randomly varied whether statements echoing Russian propaganda about Ukraine were attributed to prominent American experts and whether these statements were accompanied by corrections. Results show that attribution to a renowned political scientist substantially increased statement credibility among Republicans, while attribution to a government official had no effect. However, factual corrections consistently reduced propaganda credibility regardless of source attribution, offsetting expert credibility premiums. These findings illuminate a critical vulnerability in democratic discourse, the exploitation of expert authority to legitimize foreign narratives. At the same time, they highlight the weakness of such borrowed authority, as it can be effectively countered by evidence.</div>
+      </div>
 
-        <ul class="paper-list">
-            <li>
-                <div class="paper-title">Still Watching, Less Persuaded: Attention to News Reduces Authoritarian
-                    Propaganda Effectiveness</div>
-                <div class="paper-authors">With Georgiy Syunyaev</div>
-                <div class="paper-link">
-                    <a href="https://osf.io/preprints/osf/9rf6p_v3" target="_blank">Current version</a>
-                </div>
-                <div class="paper-abstract">
-                    State propaganda in autocracies often creates information bubbles, leaving citizens unwilling or
-                    unable to switch to alternative sources. This study shows that propaganda's sway can be decreased
-                    even without escaping such bubbles. In a panel experiment with 1,176 Russian citizens, we randomly
-                    assigned participants to analyze the reporting patterns of (i) propagandistic state-owned TV content
-                    only or (ii) both state-owned and balanced non-governmental TV content over four weeks. Two weeks
-                    after the intervention, both treatments reduced support for the authoritarian regime but did not
-                    undermine trust in or exposure to state media. Exploiting the differences in news channel
-                    composition across treatments, we find support for two mechanisms explaining these effects:
-                    increased attention to familiar media content and increased consumption of news from non-government
-                    sources. Subgroup analyses show that these mechanisms operate primarily among citizens who already
-                    exhibit skepticism toward the regime and propaganda.
-                </div>
-            </li>
+      <div class="wp">
+        <h3>What About Whataboutism?</h3>
+        <div class="auth">with Hannah Chapman</div>
+        <div class="abs">Politicians frequently attempt to deflect criticism and responsibility for wrongdoing by raising irrelevant issues or counter-accusations. This practice, known as whataboutism, was a common Soviet propaganda tactic during the Cold War and has since become a widely used rhetorical strategy in contemporary political debates. But does this propaganda strategy influence political attitudes and, if so, how? This paper tests the impact of whataboutism by Russian authorities on political attitudes using original survey experiments of nationally representative populations in Russia. We investigate how reminders by Russian authorities of foreign countries' record on salient policy issues influence citizens' evaluation of both countries' record on the same issue. We hypothesize that such reminders will depress Russians' evaluations of the situation not only in the target country but in Russia as well, increasing overall cynicism about their own country's politics.</div>
+      </div>
 
-            <li>
-                <div class="paper-title">Borrowed Authority: Expert Messengers and the Credibility of Foreign Propaganda
-                    Narratives</div>
-                <div class="paper-abstract">
-                    Foreign propaganda increasingly penetrates democratic discourse through domestic intermediaries.
-                    This study examines whether expert attribution enhances the credibility of authoritarian messaging
-                    and whether fact-based corrections can offset such credibility gains. In a survey experiment with
-                    1,267 U.S. residents, I randomly varied whether statements echoing Russian propaganda about Ukraine
-                    were attributed to prominent American experts and whether these statements were accompanied by
-                    corrections. Results show that attribution to a renowned political scientist substantially increased
-                    statement credibility among Republicans, while attribution to a government official had no effect.
-                    However, factual corrections consistently reduced propaganda credibility regardless of source
-                    attribution, offsetting expert credibility premiums. These findings illuminate a critical
-                    vulnerability in democratic discourse—the exploitation of expert authority to legitimize foreign
-                    narratives. At the same time, they highlight the weakness of such borrowed authority, as it can be
-                    effectively countered by evidence.
-                </div>
-            </li>
+      <div class="wp">
+        <h3>Blatant Propaganda, Media Cynicism, and Demand for Independent Information in Autocracies</h3>
+        <div class="auth">with Alexei Zakharov and Alexander Libman</div>
+        <div class="abs">We investigate why authoritarian regimes disseminate hyperbolic and unrealistic claims about their achievements. While such content may damage the credibility of propaganda outlets, the response of some audiences will be less adverse to the regime. Those with strong pro-regime attitudes may take propaganda at face value. At the same time, blatant propaganda has the potential of invoking a broadly cynical response, undermining citizens' trust in all information sources, including independent and critical ones. Our survey experiment randomly assigns Russian participants to view either excessively positive propagandistic content or more neutral messages. We select these pairs of messages from a large pool of state and non-state news reports rated, in a pilot survey, by a panel of Russian respondents as unrealistically positive or objective. We also vary whether people are primed about their own negative economic experience, and are interested in the effect of propaganda colliding with harsh economic reality on beliefs about media credibility, information processing, and demand for alternative information. This research contributes to understanding how authoritarian information manipulation may succeed even when the regime's messaging is not persuasive to citizens.</div>
+      </div>
 
-            <li>
-                <div class="paper-title">What About Whataboutism?</div>
-                <div class="paper-authors">With Hannah Chapman</div>
-                <div class="paper-abstract">
-                    Politicians frequently attempt to deflect criticism and responsibility for wrongdoing by raising
-                    irrelevant issues or counter-accusations. This practice, known as whataboutism, was a common Soviet
-                    propaganda tactic during the Cold War and has since become a widely used rhetorical strategy in
-                    contemporary political debates. But does this propaganda strategy influence political attitudes and,
-                    if so, how? This paper tests the impact of whataboutism by Russian authorities on political
-                    attitudes using original survey experiments of nationally representative populations in Russia. We
-                    investigate how reminders by Russian authorities of foreign countries' record on salient policy
-                    issues influence citizens' evaluation of both countries' record on the same issue. We hypothesize
-                    that such reminders will depress Russians' evaluations of the situation not only in the target
-                    country but in Russia as well, increasing overall cynicism about their own country's politics.
-                </div>
-            </li>
+      <div class="wp">
+        <h3>Citizens Agree on What Is Harmful Online but Disagree on How Far Moderation Should Go: A Conjoint Experiment Across Four Countries</h3>
+        <div class="auth">with Yiming Wang, Mingcong Pan, and Yoshiko Herrera</div>
+        <div class="abs">Content moderation is widely used to address misinformation, hate speech, and other forms of harmful online content, yet it remains controversial across countries with different political institutions and speech traditions. Central to these debates is how citizens define the boundaries of permissible online speech and how these boundaries vary across political and cultural contexts. We present a cross-national conjoint experiment in the United States, Germany, Brazil, and China (N = 6,038) that examines how post characteristics, user identity cues, and contextual signals shape evaluations of harmful content and preferences for moderation. We show that majorities in all four countries judge harmful content as inappropriate and favor platform-level intervention, but diverge sharply in how to respond, whether users should be sanctioned and whether the government should be involved. Harm severity drives moderation judgments everywhere, but the weight citizens place on identity and contextual cues varies across political settings. Importantly, ideological groups within each country share a common hierarchy of concerns, differing primarily in how much to punish rather than in what should be punished. Therefore, citizens across political systems agree on an evaluative framework for harm, but agreement may break down at enforcement, where country-specific contexts constrain the prospects for a single, globally legitimate model of online speech governance.</div>
+      </div>
 
-            <li>
-                <div class="paper-title">Blatant Propaganda, Media Cynicism, and Demand for Independent Information in
-                    Autocracies</div>
-                <div class="paper-authors">With Alexei Zakharov and Alexander Libman</div>
-                <div class="paper-abstract">
-                    We investigate why authoritarian regimes disseminate hyperbolic and unrealistic claims about their
-                    achievements. While such content may damage the credibility of propaganda outlets, the response of
-                    some audiences will be less adverse to the regime. Those with strong pro-regime attitudes may take
-                    propaganda at face value. At the same time, blatant propaganda has the potential of invoking a
-                    broadly cynical response, undermining citizens' trust in all information sources, including
-                    independent and critical ones. Our survey experiment randomly assigns Russian participants to view
-                    either excessively positive propagandistic content or more neutral messages. We select these pairs
-                    of messages from a large pool of state and non-state news reports rated, in a pilot survey, by a
-                    panel of Russian respondents as unrealistically positive or objective. We also vary whether people
-                    are primed about their own negative economic experience, and are interested in the effect of
-                    propaganda colliding with harsh economic reality on beliefs about media credibility, information
-                    processing, and demand for alternative information.This research contributes to understanding how
-                    authoritarian information manipulation may succeed even when the regime's messaging is not
-                    persuasive to citizens.
-                </div>
-            </li>
+      <div class="wp">
+        <h3>Trust Building Across Identity Groups: An Experiment in Kazakhstan</h3>
+        <div class="auth">with Yoshiko Herrera, Andrew Kydd, and Evgeniia Mitrokhina</div>
+        <div class="abs">Mistrust is a common cause of conflict between individuals belonging to different identity groups. When can such mistrust be overcome? We study this question using an experiment based on a trust game between members of different social identity groups. In particular, we study the effect of hearing about positive interactions across group lines on the willingness of individuals to take a chance on cooperating with outgroup members. We field the experiment in Kazakhstan, focusing on relations between Kazakhs and Russians.</div>
+      </div>
 
-            <li>
-                <div class="paper-title">Citizens Agree on What Is Harmful Online but Disagree on How Far Moderation
-                    Should Go: A Conjoint Experiment Across Four Countries</div>
-                <div class="paper-authors">With Yiming Wang, Mingcong Pan, and Yoshiko Herrera</div>
-                <div class="paper-abstract">
-                    Content moderation is widely used to address misinformation, hate speech, and other forms of harmful
-                    online content, yet it remains controversial across countries with different political institutions
-                    and speech traditions. Central to these debates is how citizens define the boundaries of permissible
-                    online speech and how these boundaries vary across political and cultural contexts. We present a
-                    cross-national conjoint experiment in the United States, Germany, Brazil, and China ($N = 6{,}038$)
-                    that examines how post characteristics, user identity cues, and contextual signals shape evaluations
-                    of harmful content and preferences for moderation. We show that majorities in all four countries
-                    judge harmful content as inappropriate and favor platform-level intervention, but diverge sharply in
-                    how to respond---whether users should be sanctioned and whether the government should be involved.
-                    Harm severity drives moderation judgments everywhere, but the weight citizens place on identity and
-                    contextual cues varies across political settings. Importantly, ideological groups within each
-                    country share a common hierarchy of concerns, differing primarily in how much to punish rather than
-                    in what should be punished. Therefore, citizens across political systems agree on an evaluative
-                    framework for harm, but agreement may break down at enforcement, where country-specific contexts
-                    constrain the prospects for a single, globally legitimate model of online speech governance.
-                </div>
-            </li>
+      <div class="wp">
+        <h3>Countering Authoritarian Censorship via Grassroots Communication Campaigns: Evidence from an Experimental Mega-Study in Wartime Russia</h3>
+        <div class="auth">with Julia A. Minson, Aaron Erlich, Jordan Gans-Morse, Christopher Higgins, and others</div>
+        <div class="abs">In response to Russia's 2022 full-scale invasion of Ukraine, citizen-led communication campaigns leveraged modern information technology to transmit millions of messages providing uncensored information to Russians via emails, texts, social media apps, and website commentary. Yet it remains unclear to what extent such initiatives can penetrate authoritarian censorship and propaganda, and which types of messaging are most likely to succeed. To investigate, we partnered with Mail2Ru, a prominent citizen-led grassroots initiative, to conduct two pre-registered field experiments on the effectiveness of citizen-to-citizen email communication. For Study 1, a large-scale "mega-study," we invited behavioral science experts to design theoretically informed persuasive messages encouraging Russians to watch an uncensored video about the invasion. Approximately 260,000 email recipients were randomly assigned one of eleven treatments or two control conditions. Study 1 showed that information technology's scalability enables even poorly designed messages to engage large audiences, but also that most expert-designed messages failed to outperform controls. Our top-performing intervention, however, nearly doubled engagement with the video. Study 2 successfully replicated the benefits of our top-performing intervention six months later, confirming its robustness. Study 3 probed mechanisms underlying our field experiment results, producing initial evidence that in the challenging context of censorship and repression, strategies emphasizing receptiveness and respectful engagement with opposing perspectives might be most effective. Together, these findings offer evidence-based guidance for citizen-led efforts to counter authoritarian propaganda.</div>
+      </div>
 
-            <li>
-                <div class="paper-title">Trust Building Across Identity Groups: An Experiment in Kazakhstan</div>
-                <div class="paper-authors">With Yoshiko Herrera, Andrew Kydd, and Evgeniia Mitrokhina</div>
-                <div class="paper-abstract">
-                    Mistrust is a common cause of conflict between individuals belonging to different identity groups.
-                    When can such mistrust be overcome? We study this question using an experiment based on a trust game
-                    between members of different social identity groups. In particular, we study the effect of hearing
-                    about positive interactions across group lines on the willingness of individuals to take a chance on
-                    cooperating with outgroup members. We field the experiment in Kazakhstan, focusing on relations
-                    between Kazakhs and Russians.
-                </div>
-            </li>
+    </section>
+  </div>
+</main>
 
-            <li>
-                <div class="paper-title">Countering Authoritarian Censorship via Grassroots Communication Campaigns:
-                    Evidence from an Experimental Mega-Study in Wartime Russia</div>
-                <div class="paper-authors">With Julia A. Minson, Aaron Erlich, Jordan Gans-Morse, Christopher Higgins,
-                    and others</div>
-                <div class="paper-abstract">
-                    In response to Russia's 2022 full-scale invasion of Ukraine, citizen-led communication campaigns
-                    leveraged modern information technology to transmit millions of messages providing uncensored
-                    information to Russians via emails, texts, social media apps, and website commentary. Yet it remains
-                    unclear to what extent such initiatives can penetrate authoritarian censorship and propaganda, and
-                    which types of messaging are most likely to succeed. To investigate, we partnered with Mail2Ru, a
-                    prominent citizen-led grassroots initiative, to conduct two pre-registered field experiments on the
-                    effectiveness of citizen-to-citizen email communication. For Study 1, a large-scale “mega-study,” we
-                    invited behavioral science experts to design theoretically informed persuasive messages encouraging
-                    Russians to watch an uncensored video about the invasion. Approximately 260,000 email recipients
-                    were randomly assigned one of eleven treatments or two control conditions. Study 1 showed that
-                    information technology's scalability enables even poorly designed messages to engage large
-                    audiences, but also that most expert-designed messages failed to outperform controls. Our
-                    top-performing intervention, however, nearly doubled engagement with the video. Study 2 successfully
-                    replicated the benefits of our top-performing intervention six months later, confirming its
-                    robustness. Study 3 probed mechanisms underlying our field experiment results, producing initial
-                    evidence that in the challenging context of censorship and repression, strategies emphasizing
-                    receptiveness and respectful engagement with opposing perspectives might be most effective.
-                    Together, these findings offer evidence-based guidance for citizen-led efforts to counter
-                    authoritarian propaganda.
-                </div>
-            </li>
-        </ul>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <div>©2026 Anton Shirikov</div>
-            <div class="footer-links">
-                <a href="index.html">About</a>
-                <a href="files/AntonShirikovCV.pdf" rel="noreferrer" target="_blank">CV</a>
-                <a href="research.html">Research</a>
-                <a href="publications.html">Publications</a>
-            </div>
-        </div>
-    </footer>
+<footer>
+  <div class="wrap">
+    <div class="frow">
+      <div class="fcontact">
+        <div class="mono" style="margin-bottom:12px">Contact &amp; Follow</div>
+        <a class="email" data-user="shirikov" data-domain="ku.edu"></a>
+        <a href="https://twitter.com/AntonShirikov">X (Twitter) ↗</a>
+        <a href="https://scholar.google.com/citations?user=MyIY078AAAAJ&hl=en">Google Scholar ↗</a>
+      </div>
+      <div class="fnav">
+        <a href="index.html">About</a><a href="research.html">Research</a><a href="publications.html">Publications</a><a href="data.html">Data Sets</a><a href="teaching.html">Teaching</a><a href="media.html">Media</a><a href="files/AntonShirikovCV.pdf" target="_blank">CV</a>
+      </div>
+    </div>
+    <div class="copy"><span>© 2026 Anton Shirikov</span></div>
+  </div>
+</footer>
+<script src="assets/site.js"></script>
 </body>
-
 </html>

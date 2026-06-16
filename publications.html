@@ -1,532 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publications - Anton Shirikov</title>
-    <meta name="description" content="Anton Shirikov, Political Scientist" />
-    <meta name="author" content="Anton Shirikov" />
-
-    <link rel="icon" type="image/png" href="favicon.ico">
-    <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon.png">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #8b3a3a;
-            --accent-color: #b94a48;
-            --text-color: #2d2d2d;
-            --text-light: #64748b;
-            --border-color: #cbd5e1;
-            --bg-subtle: #f8fafc;
-            --link-color: #b94a48;
-            --link-hover: #8b3a3a;
-            --highlight-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            --footer-bg: #334155;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            color: var(--text-color);
-            line-height: 1.7;
-            font-size: 17px;
-            background: #ffffff;
-        }
-
-        h1,
-        h2,
-        h3 {
-            font-family: 'Lora', Georgia, serif;
-            font-weight: 600;
-            color: var(--primary-color);
-            line-height: 1.3;
-        }
-
-        h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        h3 {
-            font-size: 1.3rem;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        a {
-            color: var(--link-color);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        a:hover {
-            color: var(--link-hover);
-        }
-
-        /* Header & Navigation */
-        header {
-            background: var(--bg-subtle);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            background: rgba(247, 250, 252, 0.95);
-        }
-
-        nav {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .site-title {
-            font-family: 'Lora', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            font-weight: 400;
-            color: var(--text-color);
-            padding: 0.5rem 0;
-            position: relative;
-        }
-
-        .nav-links a.active {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
-            width: 100%;
-        }
-
-        /* Main Content */
-        main {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        /* Publication Lists */
-        .publication-section {
-            margin-bottom: 3rem;
-        }
-
-        .pub-list {
-            list-style: none;
-        }
-
-        .pub-list li {
-            margin-bottom: 2rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .pub-list li:last-child {
-            border-bottom: none;
-        }
-
-        .pub-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            line-height: 1.5;
-        }
-
-        .pub-venue {
-            font-style: italic;
-            color: var(--text-color);
-            margin-bottom: 0.3rem;
-        }
-
-        .pub-links {
-            margin-top: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .pub-links a {
-            display: inline;
-            margin-right: 0;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--footer-bg);
-            color: #e2e8f0;
-            padding: 2rem;
-            margin-top: 3rem;
-        }
-
-        .footer-content {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.95rem;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .footer-links a {
-            color: #e2e8f0;
-            opacity: 0.9;
-            transition: opacity 0.2s ease;
-        }
-
-        .footer-links a:hover {
-            opacity: 1;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            nav {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1rem;
-            }
-
-            .nav-links {
-                gap: 1rem;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            h3 {
-                font-size: 1.2rem;
-            }
-
-            main {
-                padding: 2rem 1.5rem;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publications — Anton Shirikov</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .grouphead{margin:48px 0 6px;padding-top:18px;border-top:2px solid var(--rule)}
+  .grouphead h2{font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:-.02em;text-transform:uppercase;color:var(--accent);line-height:1}
+</style>
 </head>
-
 <body>
-    <header>
-        <nav>
-            <a href="index.html" class="site-title">Anton Shirikov</a>
-            <ul class="nav-links">
-                <li><a href="index.html">About</a></li>
-                <li><a href="files/AntonShirikovCV.pdf" rel="noreferrer" target="_blank">CV</a></li>
-                <li><a href="research.html">Research</a></li>
-                <li><a href="publications.html" class="active">Publications</a></li>
-                <li><a href="data.html">Data Sets</a></li>
-                <li><a href="teaching.html">Teaching</a></li>
-            </ul>
-        </nav>
-    </header>
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="index.html">Anton Shirikov</a>
+      <button class="navtoggle" aria-label="Menu" aria-expanded="false"><span></span></button>
+      <div class="navlinks">
+        <a href="index.html">About</a>
+        <a href="research.html">Research</a>
+        <a class="active" href="publications.html">Publications</a>
+        <a href="data.html">Data Sets</a>
+        <a href="teaching.html">Teaching</a>
+        <a href="media.html">Media</a>
+        <a class="cv" href="files/AntonShirikovCV.pdf" target="_blank">CV</a>
+      </div>
+    </nav>
+  </div>
+</header>
 
-    <main>
-        <h2>Publications</h2>
+<main>
+  <div class="wrap">
+    <section class="pagehead">
+      <h1>Publications</h1>
+    </section>
+  </div>
 
-        <section class="publication-section">
-            <h3>Papers</h3>
-            <ul class="pub-list">
-                <li>
-                    <div class="pub-title">
-                        <a href="https://onlinelibrary.wiley.com/doi/10.1111/ajps.12952" target="_blank">"Is There
-                            Really a Dictator's Dilemma? Information and Repression in Autocracy."</a>
-                    </div>
-                    <div class="pub-venue">American Journal of Political Science, 2026, Vol. 70, No.1.</div>
-                    <div>With Scott Gehlbach, Zhaotian Luo, and Dmitriy Vorobyev.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://journals.sagepub.com/doi/10.1177/00491241251340080"
-                            target="_blank">"Quantifying Narrative Similarity Across Languages."</a>
-                    </div>
-                    <div class="pub-venue">Sociological Methods & Research, 2025.</div>
-                    <div>With Hannah Waight, Solomon Messing, Margaret E. Roberts, Jonathan Nagler, Jason Greenfield,
-                        Megan Brown, Kevin Aslett, and Joshua A. Tucker.</div>
-                    <div class="pub-links">
-                        <a href="https://solomonmg.github.io/pdf/Quantifying_Narrative_Similarity_Across_Languages.pdf"
-                            target="_blank">Accepted manuscript</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.journals.uchicago.edu/doi/10.1086/729941" target="_blank">"Rethinking
-                            Propaganda: How State Media Build Trust Through Belief Affirmation."</a>
-                    </div>
-                    <div class="pub-venue">The Journal of Politics, 2024, Vol. 86, No. 4.</div>
-                    <div class="pub-links">
-                        <a href="files/RethinkingPropaganda.pdf" target="_blank">Accepted manuscript</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.tandfonline.com/doi/full/10.1080/10758216.2024.2304246" target="_blank">"Is
-                            Postcommunism Over? What Is and Is Not Distinctive About Eastern Europe and Eurasia Three
-                            Decades After Communism."</a>
-                    </div>
-                    <div class="pub-venue">Problems of Post-Communism, 2024, Vol. 71, No. 6.</div>
-                    <div>With Dmitrii Kofanov and Yoshiko M. Herrera.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.tandfonline.com/doi/full/10.1080/10758216.2024.2310637"
-                            target="_blank">"Why Is Media Trust Low in Post-Communist Countries?"</a>
-                    </div>
-                    <div class="pub-venue">Problems of Post-Communism, 2024, Vol. 71, No. 6.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.tandfonline.com/eprint/XES72DUWDUDVVHDSTSB9/full?target=10.1080/10584609.2023.2257618"
-                            target="_blank">"Fake News for All: How Citizens Discern Disinformation in Autocracies."</a>
-                    </div>
-                    <div class="pub-venue">Political Communication, 2024, Vol. 41, No. 1.</div>
-                    <div class="pub-links">
-                        <a href="files/FakeNewsForAll.pdf" target="_blank">Accepted manuscript</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.nowpublishers.com/article/Details/QJPS-20228" target="_blank">"The Oligarch
-                            Vanishes: Defensive Ownership, Property Rights, and Political Connections."</a>
-                    </div>
-                    <div class="pub-venue">Quarterly Journal of Political Science, 2022, Vol. 17, No. 4.</div>
-                    <div>With John Earle, Solomiya Shpak, and Scott Gehlbach.</div>
-                    <div class="pub-links">
-                        <a href="https://ukrainianstudies.org/aaus-announces-prize-winners-in-the-best-book-and-best-article-categories-in-this-years-competition/"
-                            rel="noreferrer" target="_blank">Best Article Prize</a>, American Association for Ukrainian
-                        Studies
-                    </div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.tandfonline.com/doi/full/10.1080/13572334.2021.1940435"
-                            target="_blank">"Who Gets Ahead in Authoritarian Parliaments? The Case of the Russian State
-                            Duma."</a>
-                    </div>
-                    <div class="pub-venue">The Journal of Legislative Studies, 2021.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://journals.sagepub.com/doi/full/10.1177/0888325419900244"
-                            target="_blank">"Eurasia and Post-Communism: Weasel Words?"</a>
-                    </div>
-                    <div class="pub-venue">East European Politics and Societies, 2020, Vol. 34, No. 2.</div>
-                    <div>With Yoshiko M. Herrera and Dmitrii Kofanov.</div>
-                </li>
-            </ul>
-        </section>
+  <div class="wrap">
+    <!-- Book -->
+    <div class="grouphead"><h2>Book</h2></div>
+    <div class="pub">
+      <div>
+        <div class="pt">How Propaganda Wins: The Making of Loyal Audiences in Autocracies</div>
+        <div class="pv">Cambridge University Press, forthcoming</div>
+        <div class="plinks"><a href="research.html">Overview</a></div>
+      </div>
+      <div class="py">2027</div>
+    </div>
 
-        <section class="publication-section">
-            <h3>Book Chapters</h3>
-            <ul class="pub-list">
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.cambridge.org/us/academic/subjects/politics-international-relations/russian-and-east-european-government-politics-and-policy/russian-politics-today-stability-and-fragility"
-                            target="_blank">"The Russian Media."</a>
-                    </div>
-                    <div>In: Wengle, Susanne (ed.). <i>Russian Politics Today: Stability and Fragility</i>. Cambridge
-                        University Press, 2023.</div>
-                    <div>With Scott Gehlbach and Tetyana Lokot.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.routledge.com/Populists-and-the-Pandemic-How-Populists-Around-the-World-Responded-to/Ringe-Renno/p/book/9781032051956"
-                            target="_blank">"Russia: Muddling Through Populism and the Pandemic."</a>
-                    </div>
-                    <div>In: Ringe, Nils, and Lucio Renno (eds.). <i>Populists and the Pandemic: How Populists Around
-                            the World Responded to COVID-19</i>. Routledge, 2022.</div>
-                    <div>With Yoshiko M. Herrera and Valeriia Umanets.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.e-elgar.com/shop/handbook-on-the-geographies-of-regions-and-territories"
-                            target="_blank">"Sovereignty and Regionalism in Eurasia."</a>
-                    </div>
-                    <div>In: Paasi, Anssi, John Harrison, and Martin Jones (eds.). <i>Elgar Handbook on the Geographies
-                            of Regions and Territories</i>. Edward Elgar Publishing, 2018.</div>
-                    <div>With Dmitrii Kofanov and Yoshiko M. Herrera.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.crcpress.com/Public-Administration-in-Post-Communist-Countries-Former-Soviet-Union/Liebert-Condrey-Goncharov/p/book/9781439861370"
-                            target="_blank">"Public Administration in Russia."</a>
-                    </div>
-                    <div>In: Liebert, Saltanat, Stephen E. Condrey, and Dmitry Goncharov (eds.). <i>Public
-                            Administration in Post-Communist Countries: Former Soviet Union, Central and Eastern Europe,
-                            and Mongolia</i>. Routledge, 2013.</div>
-                    <div>With Dmitry Goncharov.</div>
-                </li>
-            </ul>
-        </section>
+    <!-- Papers -->
+    <div class="grouphead"><h2>Peer-Reviewed Papers</h2></div>
 
-        <section class="publication-section">
-            <h3>Policy Memos & Reviews</h3>
-            <ul class="pub-list">
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.ponarseurasia.org/war-on-screens-the-full-scale-invasion-of-ukraine-in-russian-state-media/"
-                            target="_blank">"War on Screens: The Full-Scale Invasion of Ukraine in Russian State
-                            Media."</a>
-                    </div>
-                    <div>PONARS Eurasia Policy Memo No. 951, 2025.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://onlinelibrary.wiley.com/doi/10.1111/russ.12708" target="_blank">Book Review:
-                            <i>Seeing Red: Russian Propaganda and American News</i> by Sarah Oates and Gordon Neil
-                            Ramsay.</a>
-                    </div>
-                    <div class="pub-venue">The Russian Review, 2025, Vol. 84, No. 1.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.ponarseurasia.org/can-russians-learn-to-recognize-propaganda-understanding-of-media-bias-amid-the-ukraine-war/"
-                            target="_blank">"Can Russians Learn to Recognize Propaganda? Understanding of Media Bias
-                            Amid the Ukraine War."</a>
-                    </div>
-                    <div>PONARS Eurasia Policy Memo No. 918, 2024. With Georgiy Syunyaev.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.ponarseurasia.org/filtering-the-news-why-russians-prefer-propaganda-and-shield-themselves-from-independent-reporting/"
-                            target="_blank">"Filtering the News: Why Russians Prefer Propaganda and Shield Themselves
-                            from Independent Reporting."</a>
-                    </div>
-                    <div>PONARS Eurasia Policy Memo No. 873, 2024.</div>
-                </li>
-            </ul>
-        </section>
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://onlinelibrary.wiley.com/doi/10.1111/ajps.12952">Is There Really a Dictator's Dilemma? Information and Repression in Autocracy</a>
+        <div class="pv">American Journal of Political Science, Vol. 70, No. 1</div>
+        <div class="pmeta"><span class="authors">with Scott Gehlbach, Zhaotian Luo &amp; Dmitriy Vorobyev</span></div>
+      </div>
+      <div class="py">2026</div>
+    </div>
 
-        <section class="publication-section">
-            <h3>Media & Commentary</h3>
-            <ul class="pub-list">
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.pbs.org/newshour/show/how-russia-is-spreading-blatantly-false-information-about-the-war-in-ukraine"
-                            target="_blank">"How Russia is spreading blatantly false information about the war in
-                            Ukraine."</a>
-                    </div>
-                    <div>PBS NewsHour interview, 2022.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.washingtonpost.com/politics/2022/03/03/russian-journalists-report-facts-about-ukraine-why-do-russians-ignore-them/"
-                            target="_blank">"Russian journalists report the facts about Ukraine. Why do Russians ignore
-                            them?"</a>
-                    </div>
-                    <div>The Washington Post, 2022.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.cjr.org/tow_center/qa-how-does-propaganda-work-one-russian-scholar-is-probing-the-power-of-putins-disinformation-regime.php"
-                            target="_blank">"How does propaganda work? One Russian scholar is probing the power of
-                            Putin's disinformation regime."</a>
-                    </div>
-                    <div>Columbia Journalism Review interview, 2023.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://russiapost.info/society/opium" target="_blank">"Opium for the masses: How
-                            propaganda won Russians' trust."</a>
-                    </div>
-                    <div>Russia.Post, 2022.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.wpr.org/why-russia-losing-narrative-over-its-invasion-ukraine"
-                            target="_blank">"Why Russia is losing the narrative over its invasion of Ukraine."</a>
-                    </div>
-                    <div>Wisconsin Public Radio interview, 2022.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://news.ku.edu/news/article/relationship-between-propaganda-and-public-reexamined-through-new-research"
-                            target="_blank">"Relationship between propaganda and public reexamined through new
-                            research."</a>
-                    </div>
-                    <div>KU News interview, 2024.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.youtube.com/watch?v=g9lDi2bYKJs&ab_channel=P%C3%9ABLICO"
-                            target="_blank">"How Putin Uses 'Victory Day' to Affirm Russia's Power."</a>
-                    </div>
-                    <div>PÚBLICO (Portugal) interview, 2022.</div>
-                </li>
-                <li>
-                    <div class="pub-title">
-                        <a href="https://www.abc.net.au/radionational/programs/futuretense/disinformation-and-propaganda-in-a-time-of-conflict/13900424"
-                            target="_blank">"Disinformation and propaganda in a time of conflict."</a>
-                    </div>
-                    <div>ABC Radio National (Australia) interview, 2022.</div>
-                </li>
-            </ul>
-        </section>
-    </main>
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://journals.sagepub.com/doi/10.1177/00491241251340080">Quantifying Narrative Similarity Across Languages</a>
+        <div class="pv">Sociological Methods &amp; Research, Vol. 54, No. 3</div>
+        <div class="pmeta"><span class="authors">with Hannah Waight, Solomon Messing, Margaret E. Roberts, Jonathan Nagler, Jason Greenfield, Megan Brown, Kevin Aslett &amp; Joshua A. Tucker</span></div>
+        <div class="plinks"><a href="https://solomonmg.github.io/pdf/Quantifying_Narrative_Similarity_Across_Languages.pdf">Accepted manuscript</a></div>
+      </div>
+      <div class="py">2025</div>
+    </div>
 
-    <footer>
-        <div class="footer-content">
-            <div>©2026 Anton Shirikov</div>
-            <div class="footer-links">
-                <a href="index.html">About</a>
-                <a href="files/AntonShirikovCV.pdf" rel="noreferrer" target="_blank">CV</a>
-                <a href="research.html">Research</a>
-                <a href="publications.html">Publications</a>
-            </div>
-        </div>
-    </footer>
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://www.journals.uchicago.edu/doi/10.1086/729941">Rethinking Propaganda: How State Media Build Trust Through Belief Affirmation</a>
+        <div class="pv">The Journal of Politics, Vol. 86, No. 4</div>
+        <div class="plinks"><a href="https://www.shirikov.com/files/RethinkingPropaganda.pdf">Accepted manuscript</a></div>
+      </div>
+      <div class="py">2024</div>
+    </div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://www.tandfonline.com/doi/full/10.1080/10758216.2024.2304246">Is Postcommunism Over? What Is and Is Not Distinctive About Eastern Europe and Eurasia Three Decades After Communism</a>
+        <div class="pv">Problems of Post-Communism, Vol. 71, No. 6</div>
+        <div class="pmeta"><span class="authors">with Dmitrii Kofanov &amp; Yoshiko M. Herrera</span></div>
+      </div>
+      <div class="py">2024</div>
+    </div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://www.tandfonline.com/doi/full/10.1080/10758216.2024.2310637">Why Is Media Trust Low in Post-Communist Countries?</a>
+        <div class="pv">Problems of Post-Communism, Vol. 71, No. 6</div>
+      </div>
+      <div class="py">2024</div>
+    </div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://www.tandfonline.com/eprint/XES72DUWDUDVVHDSTSB9/full?target=10.1080/10584609.2023.2257618">Fake News for All: How Citizens Discern Disinformation in Autocracies</a>
+        <div class="pv">Political Communication, Vol. 41, No. 1</div>
+        <div class="plinks"><a href="https://www.shirikov.com/files/FakeNewsForAll.pdf">Accepted manuscript</a></div>
+      </div>
+      <div class="py">2024</div>
+    </div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://www.nowpublishers.com/article/Details/QJPS-20228">The Oligarch Vanishes: Defensive Ownership, Property Rights, and Political Connections</a>
+        <div class="pv">Quarterly Journal of Political Science, Vol. 17, No. 4</div>
+        <div class="pmeta"><span class="authors">with John Earle, Solomiya Shpak &amp; Scott Gehlbach</span></div>
+        <div class="plinks"><a href="https://ukrainianstudies.org/aaus-announces-prize-winners-in-the-best-book-and-best-article-categories-in-this-years-competition/">Best Article Prize, American Association for Ukrainian Studies ↗</a></div>
+      </div>
+      <div class="py">2022</div>
+    </div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://www.tandfonline.com/doi/full/10.1080/13572334.2021.1940435">Who Gets Ahead in Authoritarian Parliaments? The Case of the Russian State Duma</a>
+        <div class="pv">The Journal of Legislative Studies</div>
+      </div>
+      <div class="py">2021</div>
+    </div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://journals.sagepub.com/doi/full/10.1177/0888325419900244">Eurasia and Post-Communism: Weasel Words?</a>
+        <div class="pv">East European Politics and Societies, Vol. 34, No. 2</div>
+        <div class="pmeta"><span class="authors">with Yoshiko M. Herrera &amp; Dmitrii Kofanov</span></div>
+      </div>
+      <div class="py">2020</div>
+    </div>
+
+    <!-- Book Chapters -->
+    <div class="grouphead"><h2>Book Chapters</h2></div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://www.cambridge.org/us/academic/subjects/politics-international-relations/russian-and-east-european-government-politics-and-policy/russian-politics-today-stability-and-fragility">The Russian Media</a>
+        <div class="pv">In Susanne Wengle (ed.), <em>Russian Politics Today: Stability and Fragility</em>. Cambridge University Press</div>
+        <div class="pmeta"><span class="authors">with Scott Gehlbach &amp; Tetyana Lokot</span></div>
+      </div>
+      <div class="py">2023</div>
+    </div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://www.routledge.com/Populists-and-the-Pandemic-How-Populists-Around-the-World-Responded-to/Ringe-Renno/p/book/9781032051956">Russia: Muddling Through Populism and the Pandemic</a>
+        <div class="pv">In Nils Ringe &amp; Lucio Renno (eds.), <em>Populists and the Pandemic</em>. Routledge</div>
+        <div class="pmeta"><span class="authors">with Yoshiko M. Herrera &amp; Valeriia Umanets</span></div>
+      </div>
+      <div class="py">2022</div>
+    </div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://www.e-elgar.com/shop/handbook-on-the-geographies-of-regions-and-territories">Sovereignty and Regionalism in Eurasia</a>
+        <div class="pv">In Paasi, Harrison &amp; Jones (eds.), <em>Elgar Handbook on the Geographies of Regions and Territories</em>. Edward Elgar</div>
+        <div class="pmeta"><span class="authors">with Dmitrii Kofanov &amp; Yoshiko M. Herrera</span></div>
+      </div>
+      <div class="py">2018</div>
+    </div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://www.crcpress.com/Public-Administration-in-Post-Communist-Countries-Former-Soviet-Union/Liebert-Condrey-Goncharov/p/book/9781439861370">Public Administration in Russia</a>
+        <div class="pv">In Liebert, Condrey &amp; Goncharov (eds.), <em>Public Administration in Post-Communist Countries</em>. Routledge</div>
+        <div class="pmeta"><span class="authors">with Dmitry Goncharov</span></div>
+      </div>
+      <div class="py">2013</div>
+    </div>
+
+    <!-- Policy Memos -->
+    <div class="grouphead"><h2>Policy Memos</h2></div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://www.ponarseurasia.org/war-on-screens-the-full-scale-invasion-of-ukraine-in-russian-state-media/">War on Screens: The Full-Scale Invasion of Ukraine in Russian State Media</a>
+        <div class="pv">PONARS Eurasia Policy Memo No. 951</div>
+      </div>
+      <div class="py">2025</div>
+    </div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://www.ponarseurasia.org/can-russians-learn-to-recognize-propaganda-understanding-of-media-bias-amid-the-ukraine-war/">Can Russians Learn to Recognize Propaganda? Understanding of Media Bias Amid the Ukraine War</a>
+        <div class="pv">PONARS Eurasia Policy Memo No. 918</div>
+        <div class="pmeta"><span class="authors">with Georgiy Syunyaev</span></div>
+      </div>
+      <div class="py">2024</div>
+    </div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://www.ponarseurasia.org/filtering-the-news-why-russians-prefer-propaganda-and-shield-themselves-from-independent-reporting/">Filtering the News: Why Russians Prefer Propaganda and Shield Themselves from Independent Reporting</a>
+        <div class="pv">PONARS Eurasia Policy Memo No. 873</div>
+      </div>
+      <div class="py">2024</div>
+    </div>
+
+    <!-- Book Reviews -->
+    <div class="grouphead"><h2>Book Reviews</h2></div>
+
+    <div class="pub">
+      <div>
+        <a class="pt" href="https://onlinelibrary.wiley.com/doi/10.1111/russ.12708">Review: <em>Seeing Red: Russian Propaganda and American News</em> by Sarah Oates &amp; Gordon Neil Ramsay</a>
+        <div class="pv">The Russian Review, Vol. 84, No. 1</div>
+      </div>
+      <div class="py">2025</div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="frow">
+      <div class="fcontact">
+        <div class="mono" style="margin-bottom:12px">Contact &amp; Follow</div>
+        <a class="email" data-user="shirikov" data-domain="ku.edu"></a>
+        <a href="https://twitter.com/AntonShirikov">X (Twitter) ↗</a>
+        <a href="https://scholar.google.com/citations?user=MyIY078AAAAJ&hl=en">Google Scholar ↗</a>
+      </div>
+      <div class="fnav">
+        <a href="index.html">About</a><a href="research.html">Research</a><a href="publications.html">Publications</a><a href="data.html">Data Sets</a><a href="teaching.html">Teaching</a><a href="media.html">Media</a><a href="files/AntonShirikovCV.pdf" target="_blank">CV</a>
+      </div>
+    </div>
+    <div class="copy"><span>© 2026 Anton Shirikov</span></div>
+  </div>
+</footer>
+<script src="assets/site.js"></script>
 </body>
-
 </html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Media — Anton Shirikov</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .feature{display:grid;grid-template-columns:200px 1fr auto;gap:30px;padding:26px 0;border-top:1px solid var(--hair);align-items:baseline}
+  .feature:last-child{border-bottom:1px solid var(--hair)}
+  .feature .outlet{font-family:var(--mono);font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-2)}
+  .feature h3{font-size:19px;font-weight:600;letter-spacing:-.012em;line-height:1.32}
+  a.fh:hover h3{text-decoration:underline;text-underline-offset:3px}
+  .feature .fy{font-family:var(--mono);font-size:12px;color:var(--faint);white-space:nowrap}
+  .wall{display:flex;flex-wrap:wrap;align-items:baseline;row-gap:6px;margin-top:10px}
+  .wall .item{font-size:clamp(19px,2.8vw,27px);font-weight:600;letter-spacing:-.015em;line-height:1.18;color:var(--ink-2);white-space:nowrap}
+  .wall .item:not(:last-child)::after{content:"\00B7";color:var(--faint);font-weight:400;margin:0 16px}
+  .wall .item a{color:var(--ink-2)}
+  .wall .item a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+  .wall sup{font-family:var(--mono);font-size:.46em;font-weight:500;top:-.85em;margin-left:3px;letter-spacing:0}
+  .wall sup a{color:var(--accent);padding:0 2px}
+  .wall sup a:hover{text-decoration:underline}
+  @media(max-width:760px){
+    .feature{grid-template-columns:1fr;gap:5px}
+    .feature .fy{order:-1}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="index.html">Anton Shirikov</a>
+      <button class="navtoggle" aria-label="Menu" aria-expanded="false"><span></span></button>
+      <div class="navlinks">
+        <a href="index.html">About</a>
+        <a href="research.html">Research</a>
+        <a href="publications.html">Publications</a>
+        <a href="data.html">Data Sets</a>
+        <a href="teaching.html">Teaching</a>
+        <a class="active" href="media.html">Media</a>
+        <a class="cv" href="files/AntonShirikovCV.pdf" target="_blank">CV</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="pagehead">
+      <h1>Media &amp; commentary</h1>
+      <!--<p class="lede">Interviews and commentary on Russian propaganda, disinformation, and the war in Ukraine.</p> -->
+    </section>
+  </div>
+
+  <div class="wrap">
+    <section class="block" style="padding-top:14px">
+      <div class="sec-head"><h2>Selected Interviews &amp; Opinions</h2></div>
+
+      <a class="fh" href="https://www.pbs.org/newshour/show/how-russia-is-spreading-blatantly-false-information-about-the-war-in-ukraine">
+        <div class="feature">
+          <div class="outlet">PBS NewsHour</div>
+          <h3>How Russia is spreading blatantly false information about the war in Ukraine</h3>
+          <div class="fy">2022</div>
+        </div>
+      </a>
+
+      <a class="fh" href="https://www.washingtonpost.com/politics/2022/03/03/russian-journalists-report-facts-about-ukraine-why-do-russians-ignore-them/">
+        <div class="feature">
+          <div class="outlet">The Washington Post</div>
+          <h3>Russian journalists report the facts about Ukraine. Why do Russians ignore them?</h3>
+          <div class="fy">2022</div>
+        </div>
+      </a>
+
+      <a class="fh" href="https://www.cjr.org/tow_center/qa-how-does-propaganda-work-one-russian-scholar-is-probing-the-power-of-putins-disinformation-regime.php">
+        <div class="feature">
+          <div class="outlet">Columbia Journalism Review</div>
+          <h3>How does propaganda work? One Russian scholar is probing the power of Putin's disinformation regime</h3>
+          <div class="fy">2023</div>
+        </div>
+      </a>
+
+      <a class="fh" href="https://www.wpr.org/why-russia-losing-narrative-over-its-invasion-ukraine">
+        <div class="feature">
+          <div class="outlet">Wisconsin Public Radio</div>
+          <h3>Why Russia is losing the narrative over its invasion of Ukraine</h3>
+          <div class="fy">2022</div>
+        </div>
+      </a>
+
+      <a class="fh" href="https://news.ku.edu/news/article/relationship-between-propaganda-and-public-reexamined-through-new-research">
+        <div class="feature">
+          <div class="outlet">KU News</div>
+          <h3>Relationship between propaganda and public reexamined through new research</h3>
+          <div class="fy">2024</div>
+        </div>
+      </a>
+
+      <a class="fh" href="https://www.youtube.com/watch?v=g9lDi2bYKJs">
+        <div class="feature">
+          <div class="outlet">PÚBLICO (Portugal)</div>
+          <h3>How Putin Uses 'Victory Day' to Affirm Russia's Power</h3>
+          <div class="fy">2022</div>
+        </div>
+      </a>
+
+      <a class="fh" href="https://www.abc.net.au/radionational/programs/futuretense/disinformation-and-propaganda-in-a-time-of-conflict/13900424">
+        <div class="feature">
+          <div class="outlet">ABC Radio National</div>
+          <h3>Disinformation and propaganda in a time of conflict</h3>
+          <div class="fy">2022</div>
+        </div>
+      </a>
+
+      <a class="fh" href="https://russiapost.info/society/opium">
+        <div class="feature">
+          <div class="outlet">Russia.Post</div>
+          <h3>Opium for the masses: How propaganda won Russians' trust</h3>
+          <div class="fy">2022</div>
+        </div>
+      </a>
+    </section>
+  </div>
+
+  <div class="wrap">
+    <section class="block" style="padding-top:8px">
+      <div class="sec-head"><h2>All Coverage &amp; Mentions</h2></div>
+      <div class="wall">
+        <span class="item"><a href="https://www.pbs.org/newshour/show/how-russia-is-spreading-blatantly-false-information-about-the-war-in-ukraine">PBS NewsHour</a></span>
+        <span class="item"><a href="https://www.ft.com/content/9d58d7b1-ceb3-429d-b952-3e7da76aace3">The Financial Times</a></span>
+        <span class="item">The Washington Post<sup><a href="https://www.washingtonpost.com/world/2022/03/17/russia-information-firewall-ukraine-war/">1</a><a href="https://www.washingtonpost.com/world/2022/04/04/russia-bucha-atrocities-war-crimes/">2</a><a href="https://www.washingtonpost.com/world/2022/03/08/russian-media-state-television-ukraine/">3</a></sup></span>
+        <span class="item"><a href="https://www.newsweek.com/2023/08/11/moscow-propaganda-machine-malfunctioning-1814983.html">Newsweek</a></span>
+        <span class="item"><a href="https://www.huffpost.com/entry/how-russia-uses-disinformation-as-a-weapon-of-war_n_6234a5d2e4b009ab92f7fe10">HuffPost</a></span>
+        <span class="item">USA Today<sup><a href="https://www.usatoday.com/story/news/politics/2022/03/23/ukraine-russia-us-schwarzenegger-hackers-propaganda/7091515001/">1</a><a href="https://www.usatoday.com/story/news/politics/2022/05/08/russia-unleashes-firehose-falsehood-justify-war-ukraine/7317819001/">2</a></sup></span>
+        <span class="item"><a href="https://www.euronews.com/2023/05/12/soviet-book-syndrome-why-russian-propaganda-works">Euronews</a></span>
+        <span class="item"><a href="https://www.politifact.com/article/2022/mar/21/russia-truth-war-ukraine-available-risk-comes-shar/">PolitiFact</a></span>
+        <span class="item"><a href="https://www.cbc.ca/news/world/ukraine-russia-information-war-1.6408380">CBC</a></span>
+        <span class="item"><a href="https://www.pressherald.com/2022/04/09/russians-in-maine-find-relations-strained-with-friends-and-family-overseas/">Portland Press Herald</a></span>
+        <span class="item"><a href="https://www.abc.net.au/radionational/programs/futuretense/disinformation-and-propaganda-in-a-time-of-conflict/13900424">ABC Radio National</a></span>
+        <span class="item"><a href="https://pressgazette.co.uk/russias-propaganda-war-at-home-how-pro-kremlin-outlets-dominate-media">Press Gazette</a></span>
+        <span class="item"><a href="https://www.youtube.com/watch?v=g9lDi2bYKJs">PÚBLICO</a></span>
+        <span class="item"><a href="https://www.latercera.com/mundo/noticia/los-desafios-clave-que-enfrentara-el-lider-del-kremlin-en-su-proximo-sexenio/WEGBUYLJERFZ7A7XPLA2OTDPGU/">La Tercera</a></span>
+        <span class="item"><a href="https://www.dailydot.com/debug/hackers-vgtrk-920k-emails-anonymous-russia/">The Daily Dot</a></span>
+        <span class="item"><a href="https://www.christianitytoday.com/news/2022/march/russian-ukrainian-churches-pastors-propaganda-war.html">Christianity Today</a></span>
+        <span class="item"><a href="https://www.wpr.org/why-russia-losing-narrative-over-its-invasion-ukraine">Wisconsin Public Radio</a></span>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="frow">
+      <div class="fcontact">
+        <div class="mono" style="margin-bottom:12px">Contact &amp; Follow</div>
+        <a class="email" data-user="shirikov" data-domain="ku.edu"></a>
+        <a href="https://twitter.com/AntonShirikov">X (Twitter) ↗</a>
+        <a href="https://scholar.google.com/citations?user=MyIY078AAAAJ&hl=en">Google Scholar ↗</a>
+      </div>
+      <div class="fnav">
+        <a href="index.html">About</a><a href="research.html">Research</a><a href="publications.html">Publications</a><a href="data.html">Data Sets</a><a href="teaching.html">Teaching</a><a href="media.html">Media</a><a href="files/AntonShirikovCV.pdf" target="_blank">CV</a>
+      </div>
+    </div>
+    <div class="copy"><span>© 2026 Anton Shirikov</span></div>
+  </div>
+</footer>
+<script src="assets/site.js"></script>
+</body>
+</html>
