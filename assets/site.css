@@ -79,6 +79,8 @@ a.pt:hover{text-decoration:underline;text-underline-offset:3px}
 .feature-block h2{font-weight:800;font-size:clamp(36px,6vw,60px);line-height:.96;letter-spacing:-.03em;margin:16px 0 10px;color:var(--ink)}
 .feature-block .sub{font-size:clamp(18px,2.6vw,22px);font-weight:500;color:var(--ink-2)}
 .feature-block p{color:var(--muted);font-size:17px;line-height:1.62;margin:22px 0 0;max-width:66ch}
+.book p a,.feature-block p a{color:var(--accent);text-decoration:underline;text-decoration-color:color-mix(in oklab,var(--accent) 40%,transparent);text-underline-offset:3px;font-weight:500}
+.book p a:hover,.feature-block p a:hover{text-decoration-color:var(--accent)}
 
 /* ---------- buttons (square, inverting) ---------- */
 .btn{display:inline-block;background:var(--ink);color:var(--paper);padding:13px 24px;font-family:var(--mono);font-size:12.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;border:1.5px solid var(--ink)}
