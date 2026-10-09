@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monopoly Without Consensus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brick: #8B2500;
+  --slate: #2C3E50;
+  --clay: #C0694A;
+  --gold: #B8860B;
+  --cream: #F5F0EB;
+  --text: #3A3330;
+  --muted: #7A716B;
+  --rule: rgba(58, 51, 48, 0.14);
+  --surface: #FFFFFF;
+  --slate-tint: rgba(44, 62, 80, 0.09);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: #F5F0EB; overflow: hidden; }
+body { font-family: "Source Sans 3", "Helvetica Neue", Arial, sans-serif; color: var(--text); }
+
+#stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: center center; }
+.slide {
+  position: absolute; inset: 0; background: var(--cream); overflow: hidden;
+  padding: 84px 120px 96px; font-size: 40px; line-height: 1.38;
+  opacity: 0; visibility: hidden; transition: opacity 0.22s ease;
+}
+.slide.active { opacity: 1; visibility: visible; }
+.slide.dark { background: var(--slate); color: #F5F0EB; }
+
+h1 { font-size: 100px; line-height: 1.04; font-weight: 800; color: var(--brick); letter-spacing: -0.5px; }
+h2 { font-size: 62px; line-height: 1.12; font-weight: 700; color: var(--brick); max-width: 1680px; padding-left: 28px; border-left: 8px solid var(--brick); }
+.dark h2 { color: #F5F0EB; border-left-color: var(--clay); }
+h3 { font-size: 1.1em; font-weight: 700; }
+.muted { color: var(--muted); }
+.small { font-size: 30px; line-height: 1.3; }
+.cite { font-size: 27px; line-height: 1.3; color: var(--muted); }
+.dark .cite { color: rgba(245, 240, 235, 0.65); }
+.body { margin-top: 52px; }
+
+.counter { position: absolute; right: 56px; bottom: 34px; font-size: 24px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.dark .counter { color: rgba(245, 240, 235, 0.55); }
+#bar { position: fixed; left: 0; bottom: 0; height: 6px; background: var(--brick); width: 0; transition: width 0.25s ease; z-index: 5; }
+
+.card { background: var(--surface); border-radius: 10px; box-shadow: var(--shadow); padding: 36px 44px 40px; border-top: 8px solid var(--brick); }
+.card.slate { border-top-color: var(--slate); }
+.card.gold { border-top-color: var(--gold); }
+.card h3 { margin-bottom: 14px; color: var(--brick); }
+.card.slate h3 { color: var(--slate); }
+.card.gold h3 { color: var(--gold); }
+.card ul { list-style: none; }
+.card li { padding: 12px 0 12px 38px; position: relative; font-size: 40px; line-height: 1.28; }
+.card li::before { content: ""; position: absolute; left: 0; top: 29px; width: 14px; height: 14px; background: var(--clay); border-radius: 2px; }
+.card.slate li::before { background: var(--slate); }
+.card p { font-size: 36px; line-height: 1.3; }
+.card.tight h3 { font-size: 42px; line-height: 1.15; min-height: 100px; }
+.card.tight li { font-size: 32px; line-height: 1.25; padding: 9px 0 9px 32px; }
+.card.tight li::before { top: 21px; width: 12px; height: 12px; }
+.card p + p { margin-top: 18px; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+
+/* title slide */
+.title-wrap { display: grid; grid-template-columns: 1fr 640px; gap: 80px; height: 100%; align-items: center; }
+.subtitle { font-size: 52px; line-height: 1.2; font-weight: 600; color: var(--slate); margin-top: 40px; max-width: 1000px; }
+.byline { margin-top: 84px; font-size: 38px; line-height: 1.45; }
+.byline b { font-weight: 700; }
+
+/* statement rows (dark and light) */
+.stmt { display: grid; grid-template-columns: 150px 1fr; gap: 20px; padding: 32px 0; border-bottom: 2px solid rgba(245, 240, 235, 0.18); align-items: center; }
+.stmt:last-child { border-bottom: 0; }
+.stmt .n { font-size: 100px; font-weight: 800; line-height: 1; color: var(--clay); font-variant-numeric: tabular-nums; }
+.stmt p { font-size: 48px; line-height: 1.25; }
+.stmt p b { font-weight: 700; color: #fff; }
+.ask { margin-top: 36px; font-size: 54px; line-height: 1.15; font-weight: 800; color: #fff; }
+.ask em { font-style: normal; color: var(--clay); }
+
+/* numbered questions */
+.qrow { display: grid; grid-template-columns: 120px 1fr; gap: 36px; align-items: start; padding: 58px 0; border-bottom: 2px solid var(--rule); }
+.qrow:last-child { border-bottom: 0; }
+.qnum { font-size: 110px; font-weight: 800; line-height: 0.9; color: var(--brick); }
+.qrow p { font-size: 58px; line-height: 1.22; font-weight: 600; }
+
+.fig { display: block; width: 100%; height: auto; }
+.fig text { font-family: "Source Sans 3", "Helvetica Neue", Arial, sans-serif; }
+
+/* survey slide */
+.fact { background: var(--surface); border-radius: 10px; box-shadow: var(--shadow); padding: 30px 38px; border-left: 8px solid var(--brick); }
+.fact b { display: block; font-size: 96px; line-height: 1; font-weight: 800; color: var(--brick); }
+.fact span { font-size: 36px; line-height: 1.25; display: block; margin-top: 8px; }
+.scale { display: flex; gap: 6px; margin: 22px 0 8px; }
+.scale i { flex: 1; height: 58px; background: var(--slate-tint); border-radius: 3px; }
+.scale i.dk { flex: 0 0 120px; margin-left: 26px; background: rgba(122, 113, 107, 0.25); }
+.scale-lab { display: flex; justify-content: space-between; font-size: 28px; color: var(--muted); }
+.flow > div { display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: start; padding: 14px 0; font-size: 34px; line-height: 1.25; }
+.flow > div + div { border-top: 2px solid var(--rule); }
+.flow i { font-style: normal; font-weight: 800; font-size: 50px; line-height: 1; color: var(--slate); }
+.flow b { color: var(--slate); }
+.qbox { background: var(--surface); box-shadow: var(--shadow); border-radius: 8px; border-left: 8px solid var(--slate); padding: 22px 32px; font-size: 40px; line-height: 1.28; font-style: italic; margin-top: 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 16px; }
+.chips span { background: var(--surface); box-shadow: var(--shadow); border-radius: 8px; padding: 10px 24px; font-size: 34px; }
+
+.callout { background: var(--surface); border-radius: 8px; box-shadow: var(--shadow); border-left: 8px solid var(--brick); padding: 26px 34px; font-size: 36px; line-height: 1.28; }
+.callout b { color: var(--brick); }
+.callout.s { border-left-color: var(--slate); }
+.callout.s b { color: var(--slate); }
+
+/* experiment slide */
+.exp { display: grid; grid-template-columns: 640px 1fr 250px; column-gap: 40px; row-gap: 26px; align-items: center; }
+.exp .hd { font-size: 30px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--muted); }
+.exp .sent { background: var(--surface); border-radius: 8px; box-shadow: var(--shadow); padding: 20px 28px; font-size: 33px; line-height: 1.25; border-left: 8px solid var(--muted); }
+.exp .sent.lo { border-left-color: var(--slate); }
+.exp .sent.hi { border-left-color: var(--brick); }
+.exp .sent b { font-weight: 700; }
+.exp .sent small { display: block; font-size: 26px; color: var(--muted); margin-top: 4px; }
+.exp .bar { display: flex; height: 84px; border-radius: 4px; overflow: hidden; }
+.exp .bar div { display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 38px; }
+.exp .eff { font-size: 46px; font-weight: 800; line-height: 1.05; }
+.exp .eff small { display: block; font-size: 26px; font-weight: 400; color: var(--muted); }
+.step { opacity: 0; transition: opacity 0.3s ease; }
+.step.on { opacity: 1; }
+.strip { margin-top: 34px; }
+
+/* takeaways */
+.take { display: grid; grid-template-columns: 80px 1fr; gap: 20px; padding: 28px 0; border-bottom: 2px solid var(--rule); align-items: baseline; }
+.take:last-child { border-bottom: 0; }
+.take i { font-style: normal; font-weight: 800; color: var(--clay); font-size: 56px; }
+.take p { font-size: 44px; line-height: 1.24; }
+.take p b { color: var(--brick); }
+
+/* notes drawer */
+#notes { position: fixed; left: 0; right: 0; bottom: 0; background: rgba(35, 31, 29, 0.97); color: #f3ece6; font-size: 20px; line-height: 1.45; padding: 18px 40px 22px; display: none; z-index: 20; max-height: 38vh; overflow: auto; border-top: 3px solid var(--brick); }
+#notes.on { display: block; }
+.slide aside.note { display: none; }
+
+/* no-JS fallback: all slides stacked */
+html.no-js, html.no-js body { overflow: auto; height: auto; }
+html.no-js #stage { position: static; transform: none !important; left: auto; top: auto; width: 1920px; height: auto; }
+html.no-js .slide { position: relative; opacity: 1; visibility: visible; height: 1080px; margin-bottom: 24px; }
+html.no-js .step { opacity: 1; }
+html.no-js aside.note { display: block; font-size: 22px; color: #555; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- 1 Title -------------------------------------------------------- -->
+<section class="slide" id="s1">
+  <div class="title-wrap">
+    <div>
+      <h1>Monopoly Without Consensus</h1>
+      <div class="subtitle">Enemy Casualties and Factual Beliefs in Wartime Russia</div>
+      <div class="byline"><b>Anton Shirikov</b><br>University of Kansas<br><span class="muted">October 9, 2026</span></div>
+    </div>
+    <svg id="title-art" viewBox="0 0 640 700" class="fig" aria-hidden="true"></svg>
+  </div>
+  <aside class="note">Thanks. I want to talk about a number that Russian state television repeats constantly: how many Ukrainian soldiers have died. What do Russians believe about it, and where do those beliefs come from? I will give the substantive results first, and finish with what the project suggests about how we can study Russia right now.</aside>
+</section>
+
+<!-- 2 Why factual beliefs ------------------------------------------ -->
+<section class="slide dark" id="s2">
+  <h2>Factual beliefs shape how citizens judge their rulers</h2>
+  <div style="margin-top:34px">
+    <div class="stmt"><div class="n">1</div><p><b>Is the economy growing? Is there progress in the war?</b> Answers to such questions shape attitudes.</p></div>
+    <div class="stmt"><div class="n">2</div><p><b>Autocrats control much of what citizens hear</b> about these facts.</p></div>
+    <div class="stmt"><div class="n">3</div><p><b>Research disagrees on whether that control works:</b> exposure to state narratives shifts beliefs, but people may also discount and read between the lines.</p></div>
+  </div>
+  <div class="ask">What do citizens believe when the state controls the supply of factual claims?</div>
+  <aside class="note">Start with why factual beliefs matter at all. Whether the economy is growing, whether the war is being won, whether the opposition draws crowds: citizens' answers to these questions shape how they judge the regime. Under autocracy the state controls much of what people hear about them. The literature is split. Some work links propaganda exposure to beliefs and behavior; other work shows people discounting and reading between the lines. So I want a case where the state supplies most of the numbers, and a fact that people cannot easily check.</aside>
+</section>
+
+<!-- 3 Why enemy casualties ----------------------------------------- -->
+<section class="slide" id="s3">
+  <h2>Consider beliefs about Ukraine's military casualties</h2>
+  <div class="body grid2" style="margin-top:44px; gap:48px">
+    <div class="card slate">
+      <h3>Why it matters</h3>
+      <ul>
+        <li>State media often report on enemy losses to signal success in the war</li>
+        <li>However, such reports may be understood as strong resistance, or as evidence of Russian tactics</li>
+        <li>An ordinary news consumer can hardly establish casualty numbers reliably</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Why not Russian casualties?</h3>
+      <ul>
+        <li>Safer to ask: Estimating the enemy's losses does not criticize the army or the Kremlin</li>
+        <li>Russian losses are costlier to discuss and closer to home: <b id="knows-share"></b> of Russians I asked know someone killed or missing</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:36px; margin-right:100px; border-left-color: var(--slate)">Independent estimates exist, so we can ask <b style="color:var(--slate)">how far Russians depart from them</b>.</div>
+  <aside class="note">State media use enemy losses to signal that Russia is winning. But the same number can be read differently: as strong Ukrainian resistance, or as evidence of Russian brutality. That is part of what makes it interesting. It is also hard for an ordinary news consumer to establish reliably, even though external estimates exist. I ask about Ukraine's losses rather than Russia's because they are less sensitive: criticizing the army is criminalized, and Russian losses are close to home. In my sample, 58 percent of the respondents who were asked know someone killed or missing, and that question went to about half the sample. Reliable independent counts exist for both sides, which lets me compare beliefs to something other than the state's version.</aside>
+</section>
+
+<!-- 4 Questions ---------------------------------------------------- -->
+<section class="slide" id="s4">
+  <h2>Three questions</h2>
+  <div class="body" style="margin-top:36px">
+    <div class="qrow"><div class="qnum">1</div><p>How far do Russians go along with casualty numbers provided by the Kremlin?</p></div>
+    <div class="qrow"><div class="qnum">2</div><p>Who departs from them, and who goes along?</p></div>
+    <div class="qrow"><div class="qnum">3</div><p>Are these beliefs malleable? Can they be corrected?</p></div>
+  </div>
+  <aside class="note">First, how much people discount the state's figures. Second, what separates those who discount more from those who discount less. Third, how firmly the belief is held, which I test with an experiment. But first, what the supply looks like.</aside>
+</section>
+
+<!-- 5 Media mentions ----------------------------------------------- -->
+<section class="slide" id="s5">
+  <h2>State TV emphasizes Ukraine's casualties and avoids covering Russia's losses</h2>
+  <div class="body" style="margin-top:40px; display:grid; grid-template-columns: 1fr 600px; gap:60px; align-items:start">
+    <div><svg id="fig-mentions" viewBox="0 0 1060 580" class="fig"></svg></div>
+    <div class="card slate" style="padding:30px 36px 34px">
+      <h3>Structured LLM coding</h3>
+      <div class="flow">
+        <div><i>1</i><span><b>Qwen 3.8</b> screens for mentions of military casualties</span></div>
+        <div><i>2</i><span>Model extracts and describes <b>each figure</b>: side, daily count or war total, source, etc.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="cite" style="margin-top:6px; max-width:1560px">February 2022 to March 2026. Channel One: news segments, about 17 a day. Meduza: articles, about 32 a day, excluding its daily live blog (until November 2024).</div>
+  <aside class="note">Here is the media supply, measured as items per day that state a casualty figure. A local LLM, Qwen 3.8 with 27 billion parameters, reads every Channel One evening segment and every Meduza article. It screens for military casualties, then extracts each figure and whose dead it counts. Channel One has about 0.66 segments a day with a figure for Ukrainian dead and 0.11 for Russian dead. Meduza has about 0.53 articles a day with a Ukrainian figure and 0.96 with a Russian one. So the contrast is that state TV talks about the enemy's dead and hardly about its own, while Meduza covers both. I leave out Meduza's daily live blog until late 2024: it is one very long digest a day, and nearly two thirds of them state a Ukrainian figure, which would make Meduza look far more active than its articles are. Counting days instead of items would also narrow the gap. The coding is still before the final validity screen.</aside>
+</section>
+
+<!-- 6 Ladder ------------------------------------------------------- -->
+<section class="slide" id="s6">
+  <h2>Channel One's running totals of Ukrainian losses grossly overestimated them</h2>
+  <div class="body" style="margin-top:26px"><svg id="fig-ladder" viewBox="0 0 1680 650" class="fig"></svg></div>
+  <div class="cite" style="margin-top:6px">Reporting of whole-war totals, 100 thousand or more, for Ukrainian casualties. Most are counts of "losses" (including missing and wounded), not deaths. The shaded band is the range of independent estimates of Ukrainian deaths in early 2026 (CSIS, UALosses).</div>
+  <aside class="note">Each dot is a whole-war total for Ukrainian casualties that aired or was published. Channel One's totals only go up, to a million. Meduza, in gold, reports many totals too, but mostly by quoting others: Western officials' estimates of 100 to 200 thousand in 2022 and 2023, and later Russian officials' figures and Trump's 700 thousand. Vesti.ru, which I coded with the earlier instrument, goes further, to 1.7 and 2 million; I left it out to keep the chart readable. Two caveats. Most totals count losses, which include the wounded and captured, while my survey asks about deaths. And the coding records that a figure appeared, not who asserted it; a few of Channel One's totals were relayed from named speakers such as von der Leyen, Gerasimov and Lavrov. The shaded band is the range of independent estimates of Ukrainian deaths in early 2026, roughly 100 to 300 thousand, so it compares directly only with the filled dots, the totals stated as killed.</aside>
+</section>
+
+<!-- 7 Audience ----------------------------------------------------- -->
+<section class="slide" id="s7">
+  <h2>Most Russians likely get these numbers from the state</h2>
+  <div class="body grid2" style="margin-top:44px; grid-template-columns: 1.5fr 1fr; align-items:center">
+    <div><svg id="fig-media" viewBox="0 0 1000 560" class="fig"></svg></div>
+    <div>
+      <div class="callout" style="margin-bottom:30px">Independent outlets report Ukraine's losses less often.</div>
+      <div class="callout s">And often, they quote the Kremlin's numbers (even if with caveats).</div>
+    </div>
+  </div>
+  <div class="cite" style="margin-top:36px">Online survey, March 2026, n = <span id="n-total"></span>.</div>
+  <aside class="note">Few Russians use independent media: 14 percent trust at least one independent outlet, against 67 percent who trust a state outlet and 70 percent who watch TV news. The survey measures use and trust, not what people read about casualties, so this is an inference. Independent outlets do report totals for Ukraine's losses, but often by quoting others: Western officials in 2022 and 2023, and later Russian officials. I have not yet quantified how many come from where, because the current coding does not record who made the claim.</aside>
+</section>
+
+<!-- 8 Survey ------------------------------------------------------- -->
+<section class="slide" id="s8">
+  <h2>I asked Russians to estimate Ukraine's war losses</h2>
+  <div class="body" style="display:grid; grid-template-columns: 560px 1fr; gap:60px; margin-top:50px">
+    <div style="display:flex; flex-direction:column; gap:30px">
+      <div class="fact"><b id="n-total2"></b><span>Russian adults</span></div>
+      <div class="fact" style="border-left-color: var(--slate)"><b style="color:var(--slate); font-size:64px">March 2026</b><span>online survey</span></div>
+    </div>
+    <div>
+      <h3 style="color:var(--slate)">The question</h3>
+      <div class="qbox">"How many Ukrainian servicemen do you think have died in the conflict so far?"</div>
+      <div class="scale" style="margin-top:34px"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="dk"></i></div>
+      <div class="scale-lab"><span style="flex:1">fewer than 50 thousand</span><span style="text-align:right">more than 1 million</span><span style="flex:0 0 120px; margin-left:26px; display:flex; justify-content:center; white-space:nowrap">hard to say</span></div>
+      <h3 style="color:var(--slate); margin-top:44px">Also measured</h3>
+      <div class="chips"><span>Confidence in the answer</span><span>Putin approval</span><span>War preference</span><span>TV, YouTube, Telegram use</span><span>Trust in media outlets</span><span>Ties to the war</span></div>
+    </div>
+  </div>
+  <aside class="note">The data are from an online survey fielded in March 2026. Everyone was asked how many Ukrainian servicemen they think have died in the conflict so far, and answered on a thirteen-point scale from fewer than 50 thousand to more than a million, with a hard-to-say option. Then they rated their confidence. Before that I measured Putin approval, whether people want the war continued or stopped, media use and trust, and ties to the war. Online samples in Russia are what they are, so I report what these respondents say rather than claiming to describe the public.</aside>
+</section>
+
+<!-- 9 Distribution ------------------------------------------------- -->
+<section class="slide" id="s9">
+  <h2>Russians overestimate losses but also discount Kremlin's numbers</h2>
+  <div class="body" style="margin-top:30px; display:grid; grid-template-columns: 1fr 450px; gap:40px; align-items:start">
+    <div><svg id="fig-dist" viewBox="0 0 1180 640" class="fig"></svg></div>
+    <div style="display:flex; flex-direction:column; gap:26px; padding-top:12px">
+      <div class="callout">Among those who gave a number, <b id="a-le300"></b> said 300 thousand or less and <b id="a-500"></b> said 500 thousand or more</div>
+      <div class="callout s">Those above 1 million are the most confident: <b id="conf-top"></b> on a five-point scale, vs <b id="conf-rest"></b> for everyone else</div>
+    </div>
+  </div>
+  <div class="cite" style="margin-top:8px">Control group, all respondents (n = <span id="n-ctrl"></span>). No external estimate was shown to this group (see later slides).</div>
+  <aside class="note">This is the control group, everyone who saw no figure. About 31 percent answered 300 thousand or less, the upper end of independent estimates. About a quarter chose the top of the scale, more than a million, which matches what state media said. Another quarter is in between with no clear peak, and 19 percent said hard to say. Among those who gave a number, the shares are 38, 32 and 30 percent, and 56 percent said at least half a million. Those above a million are also much more confident than everyone else, while confidence is flat below that.</aside>
+</section>
+
+<!-- 10 Who departs ------------------------------------------------- -->
+<section class="slide" id="s10">
+  <h2>Who departs from the state's numbers?</h2>
+  <div class="body" style="margin-top:20px"><svg id="fig-groups" viewBox="0 0 1680 730" class="fig"></svg></div>
+  <div class="cite" style="margin-top:4px; max-width:1500px">Control group, respondents who gave an estimate. Lines are 95% intervals; gaps in gray are not statistically significant.</div>
+  <aside class="note">Here is the share who estimate 500 thousand or more, by group. People who skip TV news and people who want the war stopped depart most from the state's numbers; war hawks and TV watchers go along with them. Trusting a state outlet goes the same way. Putin approval points in the same direction but the gap is smaller, 13 points with a p-value of 0.05, so I would not say it does not matter; the sample is too small to tell. Knowing someone killed or missing makes no detectable difference to what people think about Ukraine's dead, though that item went to about half the sample. Everything here is a correlation: people who want the war to continue may also be more willing to believe the enemy is losing heavily.</aside>
+</section>
+
+<!-- 11 Experiment -------------------------------------------------- -->
+<section class="slide" id="s11" data-steps="2">
+  <h2>Seeing a specific number moves guesses toward it</h2>
+  <div class="body" style="margin-top:36px">
+    <div class="exp" id="exp"></div>
+    <div class="callout s strip step" data-step="2" style="font-size:36px">While most subgroups were responsive to the low figure, Putin critics and independent news consumers resisted the high figure.</div>
+  </div>
+  <div class="cite" style="margin-top:14px">Respondents who gave an estimate. Effect: change in the share estimating 500 thousand or more relative to control.</div>
+  <aside class="note">Before the question, a random fifth of respondents saw no figure, and the rest saw a recent estimate: either 140 thousand, close to independent counts, or 700 thousand, inflated but below the state's latest totals. Each figure was shown with or without a source; naming a source made no detectable difference, so I pool them. [Press the arrow.] After the low figure, the share estimating half a million or more falls by 17 points. After the high figure it rises by 15. Respondents did not simply repeat the figure: 38 percent of those shown 700 thousand still gave a lower number, and roughly three quarters of those shown 140 thousand gave a higher one. [Press the arrow.] The low figure moved every subgroup I looked at in the same direction, TV viewers and hawks included. The high figure moved most groups too. Among critics of Putin the rise was about 3 points, and among people who trust an independent outlet about 7, against 18 for approvers. Neither small rise is distinguishable from zero, but these groups are small (a few hundred respondents each) and the difference between groups is itself not established, so I put it no more strongly than "did not clearly move". It is exploratory. Each person answered once, so this compares groups, not individuals changing their minds.</aside>
+</section>
+
+<!-- 12 Takeaways --------------------------------------------------- -->
+<section class="slide" id="s12">
+  <h2>Information control shapes the order of magnitude for factual beliefs</h2>
+  <div class="body" style="margin-top:30px">
+    <div class="take"><i>1</i><p><b>Propaganda sets the scale.</b> A majority put the toll far above independent estimates.</p></div>
+    <div class="take"><i>2</i><p><b>Discounting is real but partial.</b> A minority repeats the state's numbers: most discount them while still overestimating the losses.</p></div>
+    <div class="take"><i>3</i><p><b>The belief is malleable.</b> A single number moves answers substantially. The numbers that circulate regularly reinforce these beliefs.</p></div>
+    <div class="take"><i>4</i><p><b>Opinion is mainly divided by media exposure and war attitudes</b>.</p></div>
+  </div>
+  <aside class="note">What do we learn about propaganda and public opinion? One: monopolizing the supply of numbers sets the scale people have in mind; 45 percent of all respondents put the toll at half a million or more, against independent estimates of roughly 100 to 300 thousand. Two: discounting is real but partial; 24 percent give the top figure, but only 31 percent end up at or below 300 thousand. Three: the belief is tentative. A single competing number moves answers by 15 to 17 points and the source label barely matters, so what counts is which numbers circulate in a person's information environment, filtered by how much people discount them. Four: for public opinion, these beliefs divide more along media diet and attitudes toward the war than along regime support, though the approval gap is borderline.</aside>
+</section>
+
+<!-- 13 Studying Russia --------------------------------------------- -->
+<section class="slide" id="s13">
+  <h2>Three lessons for studying Russia in wartime</h2>
+  <div class="body grid3" style="margin-top:44px">
+    <div class="card tight">
+      <h3>Regime support is only weakly connected to beliefs about the war</h3>
+      <ul>
+        <li>Both critics and supporters overestimate Ukraine's losses</li>
+        <li>Many supporters report realistic beliefs and are receptive to corrections</li>
+        <li>Approval separates beliefs less than TV news or war preference do</li>
+      </ul>
+    </div>
+    <div class="card slate tight">
+      <h3>Group differences are informative even when overall belief levels are not</h3>
+      <ul>
+        <li>In autocracy at war, many beliefs may be unstable, loosely held, or misreported</li>
+        <li>Comparing groups shows who discounts propaganda or who is more supportive of policies, whatever the average</li>
+      </ul>
+    </div>
+    <div class="card gold tight">
+      <h3>LLMs reliably extract nuanced numbers from media or speeches</h3>
+      <ul>
+        <li>Outlets use different vocabulary and conventions, which keyword searches handle poorly</li>
+        <li>Every figure can be linked to side, period, source, etc.</li>
+        <li>E.g., Meduza often quotes Russian officials on Ukraine's casualties <span>&rarr;</span> Kremlin's messaging reaches people through independent outlets</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="note">Three things. First, regime support is a weak guide to beliefs about the war. Even among critics of Putin, about half put Ukraine's deaths at half a million or more, against 62 percent of approvers. The approval gap is 13 points and borderline; the gaps for TV news and war preference are 29. So approval polls cannot stand in for what people believe about the war. Second, group differences are sturdier than levels. A survey at war has unknowns I cannot verify: who is reached, who declines, what people are willing to say. One sentence moved levels by 15 to 17 points, while groups differed by up to 29. That does not mean levels carry no information; it means ranking groups is the safer use. Third, LLMs are now good enough to extract nuanced numbers from media reports, each with its quote and whose dead it counts, so every figure can be checked. As one use: about 12 percent of the figures of 500 or more that Meduza states for Ukraine's dead also aired on Channel One within a day, against about 1 percent when I shift the dates by one to three months. Examples are Shoigu's whole-war totals, 400 thousand in December 2023, 444 thousand in February 2024 and almost half a million in April 2024, and daily claims such as 800 a day on 27 February 2024. This is a proxy: it matches numbers, not sources, it includes foreign figures that Channel One relayed, and it uses only Channel One's evening news, so it understates overlap with state sources. Attribution coding would make it exact.</aside>
+</section>
+
+</div>
+<div id="bar"></div>
+<div id="notes"></div>
+
+<script>
+document.documentElement.classList.remove("no-js");
+const D = {"mentions":[{"outlet":"Channel One","side":"russian","share":0.18716,"lo":0.16811,"hi":0.20783},{"outlet":"Channel One","side":"ukrainian","share":0.69324,"lo":0.66927,"hi":0.71621},{"outlet":"Meduza","side":"russian","share":0.75843,"lo":0.73576,"hi":0.77974},{"outlet":"Meduza","side":"ukrainian","share":0.70337,"lo":0.67937,"hi":0.7263}],"item_rates":[{"outlet":"Channel One","side":"ukrainian","rate":0.66149},{"outlet":"Channel One","side":"russian","rate":0.11419},{"outlet":"Meduza","side":"ukrainian","rate":0.53476},{"outlet":"Meduza","side":"russian","rate":0.96352}],"match_stats":{"n":402,"share":0.12438,"placebo":0.00871},"ladder":[{"outlet":"Channel One","date":"2022-11-30","number_k":100,"type":"killed"},{"outlet":"Channel One","date":"2022-12-02","number_k":100,"type":"killed"},{"outlet":"Channel One","date":"2023-04-23","number_k":300,"type":"losses"},{"outlet":"Channel One","date":"2023-12-19","number_k":400,"type":"losses"},{"outlet":"Channel One","date":"2024-02-27","number_k":440,"type":"losses"},{"outlet":"Channel One","date":"2024-03-03","number_k":444,"type":"losses"},{"outlet":"Channel One","date":"2024-04-23","number_k":500,"type":"losses"},{"outlet":"Channel One","date":"2024-12-18","number_k":1000,"type":"losses"},{"outlet":"Channel One","date":"2024-12-22","number_k":1000,"type":"losses"},{"outlet":"Channel One","date":"2025-12-11","number_k":1000,"type":"losses"},{"outlet":"Meduza","date":"2022-09-21","number_k":100,"type":"losses"},{"outlet":"Meduza","date":"2022-10-31","number_k":100.077,"type":"losses"},{"outlet":"Meduza","date":"2022-11-30","number_k":100,"type":"killed"},{"outlet":"Meduza","date":"2022-11-30","number_k":100,"type":"losses"},{"outlet":"Meduza","date":"2022-12-01","number_k":100,"type":"killed"},{"outlet":"Meduza","date":"2022-12-01","number_k":100,"type":"losses"},{"outlet":"Meduza","date":"2022-12-02","number_k":100,"type":"killed"},{"outlet":"Meduza","date":"2022-12-22","number_k":100,"type":"killed"},{"outlet":"Meduza","date":"2022-12-28","number_k":200,"type":"killed"},{"outlet":"Meduza","date":"2023-01-23","number_k":100,"type":"losses"},{"outlet":"Meduza","date":"2023-01-25","number_k":100,"type":"losses"},{"outlet":"Meduza","date":"2023-02-03","number_k":100,"type":"losses"},{"outlet":"Meduza","date":"2023-02-12","number_k":100,"type":"losses"},{"outlet":"Meduza","date":"2023-03-14","number_k":120,"type":"losses"},{"outlet":"Meduza","date":"2023-03-16","number_k":120,"type":"losses"},{"outlet":"Meduza","date":"2023-04-06","number_k":100,"type":"losses"},{"outlet":"Meduza","date":"2023-04-07","number_k":100,"type":"losses"},{"outlet":"Meduza","date":"2023-04-13","number_k":124.5,"type":"losses"},{"outlet":"Meduza","date":"2023-04-16","number_k":124.5,"type":"losses"},{"outlet":"Meduza","date":"2023-11-02","number_k":100,"type":"losses"},{"outlet":"Meduza","date":"2023-11-13","number_k":190,"type":"losses"},{"outlet":"Meduza","date":"2023-11-27","number_k":190,"type":"losses"},{"outlet":"Meduza","date":"2023-12-04","number_k":130,"type":"losses"},{"outlet":"Meduza","date":"2023-12-19","number_k":383,"type":"losses"},{"outlet":"Meduza","date":"2024-02-27","number_k":444,"type":"losses"},{"outlet":"Meduza","date":"2024-04-11","number_k":200,"type":"losses"},{"outlet":"Meduza","date":"2024-04-23","number_k":500,"type":"losses"},{"outlet":"Meduza","date":"2024-04-25","number_k":500,"type":"losses"},{"outlet":"Meduza","date":"2024-11-29","number_k":500,"type":"losses"},{"outlet":"Meduza","date":"2024-12-08","number_k":400,"type":"losses"},{"outlet":"Meduza","date":"2025-02-07","number_k":700,"type":"losses"},{"outlet":"Meduza","date":"2026-01-29","number_k":500,"type":"losses"},{"outlet":"Meduza","date":"2026-01-29","number_k":100,"type":"killed"}],"media":[{"variable":"tv_news","share":0.69759,"lo":0.67684,"hi":0.71757},{"variable":"youtube","share":0.2368,"lo":0.21847,"hi":0.25617},{"variable":"trust_state","share":0.67453,"lo":0.65341,"hi":0.69496},{"variable":"trust_indep","share":0.13685,"lo":0.12231,"hi":0.15282}],"ctrl":[{"bucket":1,"n":16,"share":0.0399},{"bucket":2,"n":21,"share":0.05237},{"bucket":3,"n":13,"share":0.03242},{"bucket":4,"n":25,"share":0.06234},{"bucket":5,"n":49,"share":0.12219},{"bucket":6,"n":5,"share":0.01247},{"bucket":7,"n":15,"share":0.03741},{"bucket":8,"n":19,"share":0.04738},{"bucket":9,"n":10,"share":0.02494},{"bucket":10,"n":18,"share":0.04489},{"bucket":11,"n":12,"share":0.02993},{"bucket":12,"n":26,"share":0.06484},{"bucket":13,"n":97,"share":0.2419},{"bucket":14,"n":75,"share":0.18703}],"n_ctrl":401,"region_all":[{"region":"le300","share":0.30923},{"region":"mid","share":0.26185},{"region":"top","share":0.2419},{"region":"dk","share":0.18703}],"region_ans":[{"region":"le300","share":0.38037},{"region":"mid","share":0.32209},{"region":"top","share":0.29755}],"over500_all":0.45387,"over500_ans":0.55828,"conf":[{"band":"<=300K","mean":2.75806},{"band":"300-600K","mean":2.87179},{"band":"600-900K","mean":2.925},{"band":"900K-1M","mean":2.96154},{"band":">1M","mean":4.19588}],"groups":[{"label":"War preference","yes":{"n":170,"share":0.7,"lo":0.62732,"hi":0.76384},"no":{"n":108,"share":0.40741,"lo":0.31947,"hi":0.50171},"p":1.37818e-06},{"label":"Watches TV news","yes":{"n":225,"share":0.64889,"lo":0.5845,"hi":0.70828},"no":{"n":101,"share":0.35644,"lo":0.26987,"hi":0.45353},"p":8.78803e-07},{"label":"Trusts state outlets","yes":{"n":223,"share":0.61883,"lo":0.55359,"hi":0.68006},"no":{"n":103,"share":0.42718,"lo":0.33597,"hi":0.52364},"p":0.0012},{"label":"Putin approval","yes":{"n":207,"share":0.61836,"lo":0.55059,"hi":0.68181},"no":{"n":68,"share":0.48529,"lo":0.37051,"hi":0.60165},"p":0.05331},{"label":"Knows someone killed or missing","yes":{"n":98,"share":0.59184,"lo":0.49285,"hi":0.68389},"no":{"n":75,"share":0.61333,"lo":0.50017,"hi":0.71545},"p":0.77476}],"by_arm":[{"arm":"Control","cut":"below500","n":144,"share":0.44172,"n_arm":326},{"arm":"Control","cut":"over500","n":182,"share":0.55828,"n_arm":326},{"arm":"High","cut":"below500","n":185,"share":0.29088,"n_arm":636},{"arm":"High","cut":"over500","n":451,"share":0.70912,"n_arm":636},{"arm":"Low","cut":"below500","n":417,"share":0.61144,"n_arm":682},{"arm":"Low","cut":"over500","n":265,"share":0.38856,"n_arm":682}],"pool":[{"arm":"Low","estimate":-0.16972,"lo":-0.235,"hi":-0.10444},{"arm":"High","estimate":0.15084,"lo":0.08627,"hi":0.2154}],"dk_arms":[{"arm":"No anchor","dk_share":0.18703},{"arm":"140K","dk_share":0.14653},{"arm":"140K+CSIS","dk_share":0.11168},{"arm":"700K","dk_share":0.1601},{"arm":"700K+Russia-1","dk_share":0.18135}],"e28":{"n_asked":942,"share_yes":0.58386},"n_total":1951,"n_answered":326};
+
+/* ---------- helpers ---------- */
+const C = { brick: "#8B2500", slate: "#2C3E50", clay: "#C0694A", gold: "#B8860B", cream: "#F5F0EB",
+            text: "#3A3330", muted: "#7A716B", rule: "rgba(58,51,48,0.16)" };
+const pct = (x, d = 0) => (100 * x).toFixed(d) + "%";
+const $ = (id) => document.getElementById(id);
+const T = (x, y, s, o = {}) =>
+  `<text x="${x}" y="${y}" font-size="${o.size || 28}" fill="${o.fill || C.text}" font-weight="${o.w || 400}"` +
+  ` text-anchor="${o.anchor || "start"}">${s}</text>`;
+const MINUS = "−";
+const sgn = v => (v < 0 ? MINUS : "+") + Math.abs(v * 100).toFixed(0);
+
+/* ---------- text fills ---------- */
+const R = k => D.region_all.find(r => r.region === k).share;
+const RA = k => D.region_ans.find(r => r.region === k).share;
+$("knows-share").textContent = pct(D.e28.share_yes);
+$("n-total").textContent = D.n_total.toLocaleString("en-US");
+$("n-total2").textContent = D.n_total.toLocaleString("en-US");
+$("n-ctrl").textContent = D.n_ctrl;
+$("a-le300").textContent = pct(RA("le300"));
+$("a-500").textContent = pct(D.over500_ans);
+{
+  const top = D.conf.find(b => b.band === ">1M").mean;
+  const rest = D.conf.filter(b => b.band !== ">1M").map(b => b.mean);
+  $("conf-top").textContent = top.toFixed(1);
+  $("conf-rest").textContent = "about " + (rest.reduce((a, b) => a + b, 0) / rest.length).toFixed(1);
+}
+
+/* ---------- slide 1: distribution as art ---------- */
+(function () {
+  const bars = D.ctrl.filter(d => d.bucket <= 13).map(d => d.share);
+  const max = Math.max(...bars);
+  const w = 640 / bars.length;
+  let s = "";
+  bars.forEach((v, i) => {
+    const h = 640 * (v / max) * 0.92;
+    const fill = i < 5 ? C.slate : i < 12 ? C.clay : C.brick;
+    s += `<rect x="${i * w + 4}" y="${700 - h}" width="${w - 8}" height="${h}" rx="3" fill="${fill}"/>`;
+  });
+  $("title-art").innerHTML = s;
+})();
+
+/* ---------- slide 5: mentions ---------- */
+(function () {
+  const get = (o, sd) => D.item_rates.find(m => m.outlet === o && m.side === sd);
+  const MAXR = 1.2;
+  const L = 250, w = 640, top = 150, rh = 190, bh = 66, gap = 20;
+  const sides = [["ukrainian", "UA soldiers killed", C.brick], ["russian", "RU soldiers killed", C.slate]];
+  let s = T(0, 36, "Articles stating a casualty figure, per day", { size: 36, w: 700 });
+  sides.forEach(([k, lab, c], j) => {
+    s += `<rect x="${L + j * 300}" y="66" width="26" height="26" rx="4" fill="${c}"/>` + T(L + j * 300 + 38, 89, lab, { size: 30 });
+  });
+  [0, 0.4, 0.8, 1.2].forEach(t => {
+    const x = L + w * t / MAXR;
+    s += `<line x1="${x}" x2="${x}" y1="${top - 14}" y2="${top + rh * 2 - 40}" stroke="${C.rule}"/>`;
+    s += T(x, top + rh * 2 + 2, t.toFixed(1), { size: 26, fill: C.muted, anchor: "middle" });
+  });
+  ["Channel One", "Meduza"].forEach((o, i) => {
+    const y0 = top + i * rh;
+    s += T(L - 22, y0 + bh + gap / 2 + 10, o, { size: 36, w: 700, anchor: "end" });
+    sides.forEach(([k, lab, c], j) => {
+      const m = get(o, k), y = y0 + j * (bh + gap);
+      s += `<rect x="${L}" y="${y}" width="${w * m.rate / MAXR}" height="${bh}" fill="${c}" rx="3"/>`;
+      s += T(L + w * m.rate / MAXR + 14, y + bh / 2 + 12, m.rate.toFixed(2), { size: 36, w: 800, fill: c });
+    });
+  });
+  $("fig-mentions").innerHTML = s;
+})();
+
+/* ---------- slide 6: ladder ---------- */
+(function () {
+  const W = 1680, H = 650, L = 130, R = 30, TOP = 84, B = 70;
+  const t0 = Date.parse("2022-02-24"), t1 = Date.parse("2026-06-15");
+  const X = d => L + (W - L - R) * (Date.parse(d) - t0) / (t1 - t0);
+  const ymax = 1100;
+  const Y = k => TOP + (H - TOP - B) * (1 - k / ymax);
+  let s = "";
+  [0, 250, 500, 750, 1000].forEach(k => {
+    s += `<line x1="${L}" x2="${W - R}" y1="${Y(k)}" y2="${Y(k)}" stroke="${C.rule}"/>`;
+    s += T(L - 16, Y(k) + 9, k === 0 ? "0" : k >= 1000 ? (k / 1000) + "M" : k + "K", { size: 28, fill: C.muted, anchor: "end" });
+  });
+  ["2023-01-01", "2024-01-01", "2025-01-01", "2026-01-01"].forEach(d => {
+    s += `<line x1="${X(d)}" x2="${X(d)}" y1="${Y(0)}" y2="${Y(0) + 10}" stroke="${C.muted}"/>`;
+    s += T(X(d), Y(0) + 42, d.slice(0, 4), { size: 28, fill: C.muted, anchor: "middle" });
+  });
+  // independent estimates of deaths apply to early 2026 only
+  const bandX = X("2026-01-01");
+  s += `<rect x="${bandX}" y="${Y(300)}" width="${W - R - bandX}" height="${Y(100) - Y(300)}" fill="${C.slate}" opacity="0.22"/>`;
+  s += `<line x1="${X("2026-03-13")}" x2="${X("2026-03-13")}" y1="${TOP}" y2="${Y(0)}" stroke="${C.text}" stroke-dasharray="6 6" opacity="0.5"/>`;
+  s += T(X("2026-03-13") + 12, TOP + 24, "Survey", { size: 28, fill: C.text, w: 600 });
+  const col = o => o === "Channel One" ? C.brick : o === "Meduza" ? C.gold : C.slate;
+  const dot = (o, p) => {
+    const killed = p.type === "killed";
+    const r = o === "Meduza" ? 8 : 10;
+    return `<circle cx="${X(p.date)}" cy="${Y(p.number_k)}" r="${r}" fill="${killed ? col(o) : C.cream}" stroke="${col(o)}" stroke-width="3.5"/>`;
+  };
+  // Meduza first so state series sit on top
+  const mz = D.ladder.filter(p => p.outlet === "Meduza");
+  mz.forEach(p => { s += dot("Meduza", p); });
+  ["Channel One"].forEach(o => {
+    const pts = D.ladder.filter(p => p.outlet === o).sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+    let mx = 0, path = "";
+    pts.forEach((p, i) => {
+      const prev = mx;
+      mx = Math.max(mx, p.number_k);
+      path += (i === 0 ? `M${X(p.date)},${Y(p.number_k)}` : `L${X(p.date)},${Y(prev)} L${X(p.date)},${Y(mx)}`);
+    });
+    path += `L${X("2026-03-13")},${Y(mx)}`;
+    s += `<path d="${path}" fill="none" stroke="${col(o)}" stroke-width="4" opacity="0.55"/>`;
+    pts.forEach(p => { s += dot(o, p); });
+  });
+  s += T(X("2024-12-18") - 20, Y(1000) - 26, "1M, Dec 2024", { size: 30, w: 700, fill: C.brick, anchor: "end" });
+  // legend: each entry is placed after the previous label (about 14.5px per character at 28px)
+  const legend = [
+    ["dot", C.brick, "Channel One"], ["dot", C.gold, "Meduza"],
+    ["dot", C.muted, "killed"], ["ring", C.muted, "losses"],
+    ["band", C.slate, "independent estimate of killed, early 2026 (100 to 300K)"]
+  ];
+  let lx = L + 24;
+  const ly = 26;
+  legend.forEach(([kind, c, label]) => {
+    if (kind === "dot") s += `<circle cx="${lx}" cy="${ly}" r="9" fill="${c}"/>`;
+    if (kind === "ring") s += `<circle cx="${lx}" cy="${ly}" r="9" fill="${C.cream}" stroke="${c}" stroke-width="3.5"/>`;
+    if (kind === "band") s += `<rect x="${lx - 15}" y="${ly - 12}" width="30" height="24" fill="${c}" opacity="0.3"/>`;
+    s += T(lx + 22, ly + 9, label, { size: 28 });
+    lx += 22 + label.length * 14.5 + 44;
+  });
+  $("fig-ladder").innerHTML = s;
+})();
+
+/* ---------- slide 7: media ---------- */
+(function () {
+  const get = v => D.media.find(m => m.variable === v);
+  const rows = [
+    ["Watch TV news", get("tv_news"), C.brick],
+    ["Trust a state outlet", get("trust_state"), C.brick],
+    ["Watch YouTube", get("youtube"), C.slate],
+    ["Trust an independent outlet", get("trust_indep"), C.slate]
+  ];
+  const L = 470, w = 460, rh = 140, bh = 82;
+  let s = "";
+  rows.forEach(([lab, m, c], i) => {
+    const y = 20 + i * rh;
+    s += T(L - 20, y + bh / 2 + 11, lab, { size: 36, anchor: "end", w: 600 });
+    s += `<rect x="${L}" y="${y}" width="${w * m.share}" height="${bh}" fill="${c}" rx="3"/>`;
+    s += T(L + w * m.share + 16, y + bh / 2 + 14, pct(m.share), { size: 44, w: 800, fill: c });
+  });
+  $("fig-media").innerHTML = s;
+})();
+
+/* ---------- slide 9: distribution with hard to say ---------- */
+(function () {
+  const bars = D.ctrl;
+  const W = 1180, H = 640, L = 20, MR = 20, TOP = 150, B = 120;
+  const GAP = 90;
+  const n = bars.length;
+  const bw = (W - L - MR - GAP) / n;
+  const xOf = i => L + i * bw + (i === 13 ? GAP : 0);
+  const max = 0.25;
+  const Y = v => TOP + (H - TOP - B) * (1 - v / max);
+  const colr = i => i < 5 ? C.slate : i < 12 ? C.clay : i === 12 ? C.brick : C.muted;
+  let s = "";
+  bars.forEach((b, i) => {
+    s += `<rect x="${xOf(i) + 5}" y="${Y(b.share)}" width="${bw - 10}" height="${Y(0) - Y(b.share)}" fill="${colr(i)}" rx="3"/>`;
+  });
+  s += `<line x1="${L}" x2="${W - MR}" y1="${Y(0)}" y2="${Y(0)}" stroke="${C.text}" stroke-width="2"/>`;
+  const edges = ["50", "100", "150", "200", "300", "400", "500", "600", "700", "800", "900", "1,000"];
+  edges.forEach((e, i) => { s += T(L + (i + 1) * bw, Y(0) + 38, e, { size: 25, fill: C.muted, anchor: "middle" }); });
+  s += T(xOf(13) + bw / 2, Y(0) + 38, "?", { size: 30, fill: C.muted, anchor: "middle", w: 700 });
+  s += T((L + 13 * bw) / 2, Y(0) + 86, "Estimated Ukrainian deaths, thousands", { size: 28, fill: C.text, anchor: "middle" });
+  const grp = (a, z, label, share, c, anchor) => {
+    const x0 = xOf(a) + 5, x1 = xOf(z - 1) + bw - 5;
+    const lx = anchor === "end" ? x1 : (x0 + x1) / 2;
+    return `<line x1="${x0}" x2="${x1}" y1="${TOP - 52}" y2="${TOP - 52}" stroke="${c}" stroke-width="5"/>` +
+      T(lx, TOP - 66, share, { size: 46, anchor: anchor || "middle", fill: c, w: 800 }) +
+      T(lx, TOP - 12, label, { size: 27, anchor: anchor || "middle", fill: c, w: 600 });
+  };
+  s += grp(0, 5, "300K or less", pct(R("le300")), C.slate);
+  s += grp(5, 12, "300K to 1M", pct(R("mid")), C.clay);
+  s += grp(12, 13, "Over 1M", pct(R("top")), C.brick);
+  s += grp(13, 14, "Hard to say", pct(R("dk")), C.muted, "end");
+  $("fig-dist").innerHTML = s;
+})();
+
+/* ---------- slide 10: groups ---------- */
+(function () {
+  const order = ["War preference", "Watches TV news", "Trusts state outlets", "Putin approval", "Knows someone killed or missing"];
+  const names = {
+    "War preference": ["Wants war stopped", "Wants it continued"],
+    "Watches TV news": ["Does not watch", "Watches"],
+    "Trusts state outlets": ["Trusts none", "Trusts one or more"],
+    "Putin approval": ["Disapproves", "Approves"],
+    "Knows someone killed or missing": ["No", "Yes"]
+  };
+  const L = 520, w = 700, x0 = 0.2, x1 = 0.8, rh = 124, top = 118;
+  const X = v => L + w * (v - x0) / (x1 - x0);
+  let s = T(L, 40, "Share estimating 500 thousand or more", { size: 34, w: 700 });
+  s += T(1330, 84, "Gap", { size: 28, fill: C.muted, w: 600 });
+  [0.2, 0.4, 0.6, 0.8].forEach(t => {
+    s += `<line x1="${X(t)}" x2="${X(t)}" y1="${top - 40}" y2="${top + rh * 5 - 56}" stroke="${C.rule}"/>`;
+    s += T(X(t), top + rh * 5 - 10, pct(t), { size: 26, fill: C.muted, anchor: "middle" });
+  });
+  order.forEach((lab, i) => {
+    const g = D.groups.find(q => q.label === lab);
+    const y = top + i * rh;
+    const nm = names[lab];
+    const killed = lab === "Knows someone killed or missing";
+    if (killed) {
+      s += T(L - 40, y - 2, "Knows someone", { size: 36, w: 700, anchor: "end" });
+      s += T(L - 40, y + 38, "killed or missing", { size: 36, w: 700, anchor: "end" });
+    } else {
+      s += T(L - 40, y + 12, lab, { size: 36, w: 700, anchor: "end" });
+    }
+    const a = g.no, b = g.yes;
+    const lo = a.share < b.share ? [a, nm[0]] : [b, nm[1]];
+    const hg = a.share < b.share ? [b, nm[1]] : [a, nm[0]];
+    [[lo, C.slate], [hg, C.brick]].forEach(([[q], c]) => {
+      s += `<line x1="${X(q.lo)}" x2="${X(q.hi)}" y1="${y}" y2="${y}" stroke="${c}" stroke-width="6" stroke-linecap="butt" opacity="0.5"/>`;
+      s += `<circle cx="${X(q.share)}" cy="${y}" r="15" fill="${c}"/>`;
+    });
+    s += T(X(lo[0].share), y + 56, `${lo[1]} ${pct(lo[0].share)}`, { size: 27, anchor: "middle", fill: C.slate, w: 600 });
+    s += T(X(hg[0].share), y - 26, `${hg[1]} ${pct(hg[0].share)}`, { size: 27, anchor: "middle", fill: C.brick, w: 600 });
+    const gap = Math.abs(hg[0].share - lo[0].share) * 100;
+    s += T(1330, y + 10, `${gap.toFixed(0)} pts`, { size: 38, w: 800, fill: g.p < 0.05 ? C.text : "#A39A94" });
+  });
+  $("fig-groups").innerHTML = s;
+})();
+
+/* ---------- slide 11: experiment ---------- */
+(function () {
+  const arm = a => D.by_arm.find(q => q.arm === a && q.cut === "over500").share;
+  const rows = [
+    ["Control", "<span class='sent'>Many different estimates have been reported.<small>No figure</small></span>", ""],
+    ["Low", "<span class='sent lo'>A recent estimate: <b>up to 140 thousand</b> killed.</span>", ""],
+    ["High", "<span class='sent hi'>A recent estimate: <b>no less than 700 thousand</b> killed.</span>", ""]
+  ];
+  let h = `<div class="hd">Before the question, a randomly assigned preamble</div>` +
+    `<div class="hd step" data-step="1"><span style="color:${C.slate}">&#9632; below 500K</span> &nbsp; <span style="color:${C.brick}">&#9632; 500K or more</span></div><div class="hd step" data-step="1">Effect on 500K+</div>`;
+  rows.forEach(([a, sent]) => {
+    const o = arm(a);
+    const e = D.pool.find(q => q.arm === a);
+    const eff = e
+      ? `<div class="eff step" data-step="1" style="color:${e.estimate < 0 ? C.slate : C.brick}">${sgn(e.estimate)} pts<small>[${sgn(e.lo)}, ${sgn(e.hi)}]</small></div>`
+      : `<div class="eff step" data-step="1"></div>`;
+    h += sent.replace(/^<span class='sent/, "<div class='sent").replace(/<\/span>$/, "</div>") ;
+    h += `<div class="bar step" data-step="1"><div style="width:${(1 - o) * 100}%; background:${C.slate}">${pct(1 - o)}</div><div style="width:${o * 100}%; background:${C.brick}">${pct(o)}</div></div>`;
+    h += eff;
+  });
+  $("exp").innerHTML = h;
+})();
+
+/* ---------- engine ---------- */
+(function () {
+  const slides = [...document.querySelectorAll(".slide")];
+  const stage = $("stage"), bar = $("bar"), notes = $("notes");
+  let i = 0, st = 0;
+  slides.forEach((sl, k) => {
+    const c = document.createElement("div");
+    c.className = "counter";
+    c.textContent = `${k + 1} / ${slides.length}`;
+    if (k > 0) sl.appendChild(c);
+  });
+  const steps = k => parseInt(slides[k].dataset.steps || "0", 10);
+  const fit = () => {
+    const sc = Math.min(innerWidth / 1920, innerHeight / 1080);
+    stage.style.transform = `translate(-50%, -50%) scale(${sc})`;
+  };
+  const paintSteps = () => {
+    slides[i].querySelectorAll(".step").forEach(e => e.classList.toggle("on", parseInt(e.dataset.step, 10) <= st));
+  };
+  const show = (n, atEnd) => {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    st = atEnd ? steps(i) : 0;
+    slides.forEach((s, k) => s.classList.toggle("active", k === i));
+    paintSteps();
+    // letterbox margins take the colour of the current slide
+    const bg = getComputedStyle(slides[i]).backgroundColor;
+    document.documentElement.style.background = bg;
+    document.body.style.background = bg;
+    bar.style.width = (100 * (i + 1) / slides.length) + "%";
+    const nt = slides[i].querySelector("aside.note");
+    notes.innerHTML = nt ? nt.innerHTML : "";
+    try { history.replaceState(null, "", "#" + (i + 1)); } catch (e) {}
+  };
+  const next = () => { if (st < steps(i)) { st++; paintSteps(); } else show(i + 1); };
+  const prev = () => { if (st > 0) { st--; paintSteps(); } else show(i - 1, true); };
+  addEventListener("resize", fit);
+  addEventListener("keydown", (e) => {
+    if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); next(); }
+    else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === "Home") show(0);
+    else if (e.key === "End") show(slides.length - 1);
+    else if (e.key === "f" || e.key === "F") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+    else if (e.key === "n" || e.key === "N") notes.classList.toggle("on");
+  });
+  let tx = null;
+  addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, { passive: true });
+  addEventListener("touchend", e => {
+    if (tx === null) return;
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) (dx < 0 ? next : prev)();
+    tx = null;
+  });
+  window.go = (n, s) => { show(n - 1); st = s || 0; paintSteps(); };
+  fit();
+  const start = parseInt(location.hash.slice(1), 10);
+  show(Number.isFinite(start) ? start - 1 : 0);
+})();
+</script>
+</body>
+</html>
